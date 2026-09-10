@@ -1,0 +1,24 @@
+# Entorno
+.env
+
+# Dependencias
+/vendor/
+
+# Uploads y almacenamiento
+/uploads/*
+!/uploads/.gitkeep
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/logs/*
+!/logs/.gitkeep
+
+# Sistema / IDE
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+*.swp
+*.swo
