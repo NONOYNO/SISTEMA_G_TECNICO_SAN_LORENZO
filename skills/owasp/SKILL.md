@@ -1,9 +1,9 @@
 ---
 name: owasp
-description: Evalúa y mitiga OWASP Top 10 en PortalInfor (A01–A10) sobre PHP MVC MySQL. Usar en revisiones de seguridad, checklists de aceptación o al implementar controles anti-IDOR, inyección, authn y logging.
+description: Evalúa y mitiga OWASP Top 10 en SISTEMA_G_TECNICO_SAN_LORENZO (A01–A10) sobre PHP MVC MySQL. Usar en revisiones de seguridad, checklists de aceptación o al implementar controles anti-IDOR, inyección, authn y logging.
 ---
 
-# OWASP Top 10 — PortalInfor
+# OWASP Top 10 — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

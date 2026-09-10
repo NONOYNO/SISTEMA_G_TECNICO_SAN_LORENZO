@@ -24,11 +24,17 @@ final class AnnouncementController extends Controller
     public function index(): void
     {
         $viewer = $this->viewerContext();
-        $items = $this->announcements->listForViewer($viewer);
+        $statusFilter = trim((string) ($_GET['status'] ?? ''));
+        if ($statusFilter === '' || !$viewer['can_manage']) {
+            $statusFilter = null;
+        }
+
+        $items = $this->announcements->listForViewer($viewer, $statusFilter);
 
         $this->view('announcements.index', [
             'title' => 'Avisos',
             'announcements' => $items,
+            'statusFilter' => $statusFilter,
             'canManage' => $viewer['can_manage'],
             'canCreate' => auth_can('announcements.create'),
             'canPublish' => auth_can('announcements.publish'),

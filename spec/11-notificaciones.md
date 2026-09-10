@@ -1,6 +1,6 @@
 # SPEC 11 — Notificaciones
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
 **Estado de implementación:** PENDING
 
@@ -183,7 +183,7 @@ Tablas: `notifications`, `notification_reads`, `attachments`, `announcements`.
 
 - [ ] Cards de notificaciones implementadas.
 - [ ] Lectura individual y masiva funcional.
-- [ ] Badge unread correcto.
+- [x] Badge unread correcto.
 - [ ] Prioridades visibles.
 - [ ] Adjuntos accesibles según SPEC 12.
 - [ ] Protección IDOR.

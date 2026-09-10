@@ -1,9 +1,9 @@
 ---
 name: roles-permissions
-description: Implementa RBAC de PortalInfor (roles ADMIN/RECTOR/VICERRECTOR/DOCENTE, permisos granulares, pivotes). Usar al crear tablas de permisos, seeders de roles, pantallas de asignación o cambios de política de acceso.
+description: Implementa RBAC de SISTEMA_G_TECNICO_SAN_LORENZO (roles ADMIN/RECTOR/VICERRECTOR/DOCENTE, permisos granulares, pivotes). Usar al crear tablas de permisos, seeders de roles, pantallas de asignación o cambios de política de acceso.
 ---
 
-# Roles y Permisos — PortalInfor
+# Roles y Permisos — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

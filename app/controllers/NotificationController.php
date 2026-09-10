@@ -44,6 +44,22 @@ final class NotificationController extends Controller
         ]);
     }
 
+    public function unreadCount(): void
+    {
+        $userId = auth_id();
+        if ($userId === null) {
+            abort(403);
+        }
+
+        $this->json([
+            'success' => true,
+            'message' => 'OK',
+            'data' => [
+                'unread_count' => $this->notifications->countUnread($userId),
+            ],
+        ]);
+    }
+
     public function markRead(string $id): void
     {
         $userId = auth_id();

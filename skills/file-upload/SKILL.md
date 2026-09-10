@@ -1,9 +1,9 @@
 ---
 name: file-upload
-description: Gestiona subida, almacenamiento y descarga segura de archivos en PortalInfor (PDF/Office, validación MIME, permisos). Usar al adjuntar archivos a avisos/notificaciones o exponer downloads.
+description: Gestiona subida, almacenamiento y descarga segura de archivos en SISTEMA_G_TECNICO_SAN_LORENZO (PDF/Office, validación MIME, permisos). Usar al adjuntar archivos a avisos/notificaciones o exponer downloads.
 ---
 
-# Carga de Archivos — PortalInfor
+# Carga de Archivos — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

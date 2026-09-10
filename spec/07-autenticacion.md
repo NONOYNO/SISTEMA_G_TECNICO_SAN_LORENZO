@@ -1,8 +1,8 @@
 # SPEC 07 — Autenticación
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
-**Estado de implementación:** PENDING
+**Estado de implementación:** COMPLETED (registro: active + DOCENTE + auto-login)
 
 ---
 
@@ -14,10 +14,11 @@ Especificar el módulo de autenticación: login con usuario o correo + password,
 
 ### Incluye
 - Login / logout.
+- Registro público con rol DOCENTE, cuenta `active` y auto-login.
 - Gestión de sesión autenticada.
 - Lockout temporal por intentos fallidos.
-- CSRF en login y endpoints asociados.
-- Redirect post-login según rol.
+- CSRF en login, registro y endpoints asociados.
+- Redirect post-login / post-registro al dashboard.
 
 ### No incluye
 - OAuth / SSO institucional.
@@ -41,9 +42,10 @@ Especificar el módulo de autenticación: login con usuario o correo + password,
 4. Timeout por inactividad (`SESSION_LIFETIME` minutos).
 5. `session_regenerate_id(true)` en login OK.
 6. Tras N fallos (`LOGIN_MAX_ATTEMPTS`, default 5): set `locked_until` (ej. +15 min).
-7. CSRF obligatorio en POST login.
-8. Auditoría de login success/fail/logout.
+7. CSRF obligatorio en POST login y POST registro.
+8. Auditoría de login success/fail/logout y USER_REGISTERED.
 9. AJAX login opcional además de form clásico.
+10. Registro: `status=active`, rol DOCENTE, auto-login (RF-REG-02/03/05).
 
 ## 5. Flujo funcional
 
@@ -57,6 +59,18 @@ Especificar el módulo de autenticación: login con usuario o correo + password,
 6. Si locked_until > now → 429
 7. password_verify OK → regenerate session, guardar user_id/roles/permissions, last_login_at, clear attempts
 8. Redirect /dashboard (o JSON con redirect)
+```
+
+### Registro (público)
+```text
+1. GET /register → formulario + csrf
+2. POST /register { first_name, last_name, email, username, password, password_confirmation, _csrf }
+3. Validar CSRF, unicidad email/username y reglas de password
+4. Crear usuario con status = active
+5. Asignar rol sistema DOCENTE (único rol por defecto; nunca ADMIN/RECTOR/VICERRECTOR desde el form)
+6. Auditar USER_REGISTERED (+ rol)
+7. Iniciar sesión automáticamente (mismo flujo de sesión que login OK: regenerate + roles/permissions)
+8. Redirect /dashboard
 ```
 
 ### Logout
@@ -73,10 +87,13 @@ Actualizar last_activity si OK
 ## 6. Reglas de negocio
 
 1. Mensaje único de fallo: “Credenciales inválidas” (no distinguir email vs password).
-2. Usuario `pending` o `inactive` no autentica.
+2. Usuario `pending` o `inactive` no autentica vía login.
 3. Sesión no reutiliza ID previo al login.
 4. Permisos se cargan al login y pueden refrescarse al cambiar roles (re-login o reload permissions).
-5. Rutas guest (`/login`) redirigen a dashboard si ya hay sesión.
+5. Rutas guest (`/login`, `/register`) redirigen a dashboard si ya hay sesión.
+6. **Registro público:** estado inicial `active`; rol por defecto **DOCENTE**; auto-login post-registro.
+7. El formulario de registro **no** permite elegir rol ni estado (anti privilege escalation).
+8. Si el rol DOCENTE no existe en BD, el registro falla de forma controlada (no crear usuario huérfano sin rol).
 
 ## 7. Estructura de datos
 
@@ -179,6 +196,9 @@ Sanitizar login trim; no alterar password más allá de string.
 | AUTH-07 | Inactividad > lifetime | Redirect login |
 | AUTH-08 | POST login sin CSRF | 419 |
 | AUTH-09 | Session ID cambia tras login | Diferente al pre-login |
+| AUTH-10 | Registro OK | Usuario active + rol DOCENTE |
+| AUTH-11 | Registro OK | Sesión iniciada y redirect /dashboard |
+| AUTH-12 | Registro no envía role=ADMIN | Ignorado; solo DOCENTE |
 
 ## 15. Criterios de aceptación
 

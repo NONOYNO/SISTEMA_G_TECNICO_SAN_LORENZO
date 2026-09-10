@@ -1,9 +1,9 @@
 ---
 name: deployment
-description: Despliega y configura PortalInfor en XAMPP (Apache, MySQL, .env, permisos, hardenización local). Usar al instalar el proyecto, preparar demo institucional o publicar en entorno controlado.
+description: Despliega y configura SISTEMA_G_TECNICO_SAN_LORENZO en XAMPP (Apache, MySQL, .env, permisos, hardenización local). Usar al instalar el proyecto, preparar demo institucional o publicar en entorno controlado.
 ---
 
-# Despliegue XAMPP — PortalInfor
+# Despliegue XAMPP — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 
@@ -33,9 +33,9 @@ Instalar, configurar y publicar el portal en entorno XAMPP (Apache + MySQL/Maria
 
 1. Leer `spec/24-despliegue-xampp.md` y README.
 2. Verificar XAMPP: Apache + MySQL activos; PHP 8.x; extensiones `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`.
-3. Ubicar proyecto (ej. `C:\xampp\htdocs\PortalInfor`).
-4. Apuntar DocumentRoot / Alias al front controller `app/public` (o la carpeta `public` definida), no a todo el código.
-5. Copiar `.env.example` → `.env` y configurar DB, `APP_URL`, zona horaria `America/Guayaquil`.
+3. Ubicar el proyecto en cualquier ruta (XAMPP `htdocs` o servidor). El **nombre de carpeta no debe hardcodearse** en URLs.
+4. En producción: DocumentRoot → `app/public` (raíz del sitio).
+5. Copiar `.env.example` → `.env`. Dejar `APP_URL` vacío (auto-detect) o poner la URL pública exacta. Configurar DB y `APP_KEY`.
 6. Crear base de datos MySQL vacía.
 7. Ejecutar migraciones.
 8. Ejecutar seeders solo en desarrollo/demo.
@@ -48,7 +48,7 @@ Instalar, configurar y publicar el portal en entorno XAMPP (Apache + MySQL/Maria
 
 ## Convenciones de código
 
-- URL local típica: `http://localhost/PortalInfor/public/` (ajustar a virtual host).
+- URL local típica: `http://localhost/SISTEMA_G_TECNICO_SAN_LORENZO/public/` (ajustar a virtual host).
 - Config solo vía `.env` + `app/config`.
 - No desplegar con debug abierto.
 - Versionar `CHANGELOG.md` en cada entrega.
@@ -90,7 +90,7 @@ Instalar, configurar y publicar el portal en entorno XAMPP (Apache + MySQL/Maria
 
 ## Errores comunes a evitar
 
-- Servir todo `PortalInfor/` como document root.
+- Servir todo `SISTEMA_G_TECNICO_SAN_LORENZO/` como document root.
 - Olvidar extensiones PHP (`fileinfo` para uploads).
 - Dejar seeders y debug en entrega final.
 - Rutas hardcodeadas a `C:\xampp\...` en código.

@@ -1,6 +1,6 @@
 # SPEC 02 — Requisitos Funcionales (RF)
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
 **Estado de implementación:** PENDING
 
@@ -43,9 +43,10 @@ ADMIN, RECTOR, VICERRECTOR, DOCENTE, Visitante (no autenticado).
 | ID | Requisito | Prioridad |
 |----|-----------|-----------|
 | RF-REG-01 | Registro de usuario con datos mínimos (nombre, email, username, password) | P1 |
-| RF-REG-02 | Estado inicial `pending` o `active` según configuración institucional | P1 |
-| RF-REG-03 | Asignación de rol por defecto DOCENTE (configurable) | P1 |
+| RF-REG-02 | Estado inicial `active` (política institucional vigente) | P0 |
+| RF-REG-03 | Asignación automática de rol por defecto **DOCENTE** (no ADMIN ni roles directivos) | P0 |
 | RF-REG-04 | Validación de unicidad email/username | P0 |
+| RF-REG-05 | Tras registro exitoso: iniciar sesión automáticamente y redirigir al dashboard | P0 |
 
 ### 4.3 Usuarios — RF-USER
 

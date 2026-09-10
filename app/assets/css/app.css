@@ -242,6 +242,23 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--pi-text);
 }
 
+.announcements-feed {
+  width: 100%;
+}
+
+.announcement-feed-item {
+  border-left: 4px solid var(--brand-primary);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.announcement-feed-item:hover {
+  box-shadow: 0 4px 14px rgba(13, 71, 161, 0.12);
+}
+
+.announcement-feed-item h2 a:hover {
+  color: var(--brand-primary) !important;
+}
+
 .module-hero {
   border: 1.5px solid #b3c1d1;
   border-left: 4px solid var(--pi-sky-400);
@@ -373,10 +390,104 @@ h1, h2, h3, h4, h5, h6 {
 
 .auth-body {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background: #f4f6f8;
+}
+
+.auth-main {
+  flex: 1;
   display: grid;
   place-items: center;
   padding: 1.5rem;
-  background: #f4f6f8;
+  width: 100%;
+}
+
+.guest-navbar {
+  background: linear-gradient(135deg, var(--pi-blue-900), var(--pi-blue-700));
+  box-shadow: 0 2px 8px rgba(13, 71, 161, 0.25);
+  z-index: 1030;
+}
+
+.guest-navbar .navbar-brand,
+.guest-navbar .navbar-brand:hover,
+.guest-navbar .navbar-brand:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+.guest-navbar-shield {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.guest-navbar-brand-text {
+  max-width: min(52vw, 16rem);
+}
+
+.guest-navbar-toggler {
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: #fff;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.5rem;
+}
+
+.guest-navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgba(79, 195, 247, 0.45);
+}
+
+.guest-nav-login {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: rgba(255, 255, 255, 0.75);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: rgba(255, 255, 255, 0.12);
+  --bs-btn-hover-border-color: #fff;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.guest-nav-login.active,
+.guest-nav-login[aria-current="page"] {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #fff;
+  box-shadow: inset 0 0 0 1px #fff;
+}
+
+.guest-nav-register {
+  --bs-btn-color: var(--pi-blue-900);
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #fff;
+  --bs-btn-hover-color: var(--pi-blue-900);
+  --bs-btn-hover-bg: var(--pi-sky-100);
+  --bs-btn-hover-border-color: #fff;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.guest-nav-register.active,
+.guest-nav-register[aria-current="page"] {
+  background: var(--pi-sky-100);
+  color: var(--pi-blue-900);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 991.98px) {
+  .guest-navbar .navbar-collapse {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 0.75rem;
+  }
+
+  .guest-navbar .navbar-nav .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .auth-card {
@@ -697,6 +808,66 @@ body.sidebar-open {
   color: var(--brand-primary);
   filter: none;
   animation: bell-pulse 2.4s ease-in-out infinite;
+}
+
+.nav-notification-bell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 0.45rem;
+  border-radius: 999px;
+  overflow: visible !important;
+  color: var(--pi-text) !important;
+  transition: background-color 0.15s ease;
+  z-index: 2;
+}
+
+.nav-notification-bell .bi-bell {
+  color: var(--brand-primary) !important;
+  font-size: 1.35rem;
+}
+
+.nav-notification-bell:hover,
+.nav-notification-bell:focus-visible {
+  background: rgba(21, 101, 192, 0.12);
+  color: var(--pi-text) !important;
+}
+
+.nav-bell-badge {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  transform: translate(40%, -30%) !important;
+  z-index: 10 !important;
+  min-width: 1.4rem !important;
+  height: 1.4rem !important;
+  padding: 0 0.35rem !important;
+  border-radius: 999px !important;
+  background: #c62828 !important;
+  color: #ffffff !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  line-height: 1.25rem !important;
+  text-align: center !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35) !important;
+  pointer-events: none;
+}
+
+.nav-bell-badge.is-empty,
+.nav-bell-badge.d-none,
+.nav-bell-badge[hidden] {
+  display: none !important;
+}
+
+.app-navbar,
+.app-navbar .container-fluid,
+.app-navbar .d-flex {
+  overflow: visible !important;
 }
 
 .bell-badge {

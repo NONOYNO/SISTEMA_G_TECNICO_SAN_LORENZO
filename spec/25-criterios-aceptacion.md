@@ -199,7 +199,7 @@ El sistema está **ACEPTADO** cuando:
 
 - Todas las SPEC `00`–`24` (o el conjunto implementado del proyecto).
 - Skills: `testing`, `deployment`, `owasp`, `security`, perfiles y módulos.
-- Ambiente: XAMPP en `C:\xampp\htdocs\PortalInfor`.
+- Ambiente: XAMPP en `C:\xampp\htdocs\SISTEMA_G_TECNICO_SAN_LORENZO`.
 
 ## 17. SKILL requerida
 

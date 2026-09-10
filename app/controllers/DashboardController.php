@@ -65,7 +65,7 @@ final class DashboardController extends Controller
                      WHERE status = 'published'
                        AND (expire_at IS NULL OR expire_at >= NOW())
                        AND (publish_at IS NULL OR publish_at <= NOW())
-                     ORDER BY publish_at DESC, id DESC
+                     ORDER BY COALESCE(publish_at, updated_at, created_at) DESC, id DESC
                      LIMIT 20"
                 );
                 $allRecent = $stmt ? ($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []) : [];

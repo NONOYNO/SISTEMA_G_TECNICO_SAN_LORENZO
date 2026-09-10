@@ -59,6 +59,7 @@ $router->post('/announcements/{id}/delete', [AnnouncementController::class, 'des
 
 // Notificaciones
 $router->get('/notifications', [NotificationController::class, 'index'], ['auth', 'permission:notifications.view']);
+$router->get('/notifications/unread-count', [NotificationController::class, 'unreadCount'], ['auth', 'permission:notifications.view']);
 $router->post('/notifications/{id}/read', [NotificationController::class, 'markRead'], ['auth', 'csrf', 'permission:notifications.view']);
 
 // Perfil

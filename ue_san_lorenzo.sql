@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-09-2026 a las 23:52:23
+-- Tiempo de generación: 10-09-2026 a las 23:31:04
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.1.25
 
@@ -43,6 +43,14 @@ CREATE TABLE `announcements` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `announcements`
+--
+
+INSERT INTO `announcements` (`id`, `author_id`, `title`, `description`, `content`, `category`, `priority`, `status`, `publish_at`, `expire_at`, `audience`, `created_at`, `updated_at`) VALUES
+(6, 1, 'ASUNTO: Inicio del nuevo período académico', 'Se informa a todos los estudiantes que se encuentra próximo a iniciar un nuevo período académico. Se recomienda revisar oportunamente el horario de clases, las asignaturas matriculadas y las actividades planificadas para las primeras semanas de formación.', 'Con el propósito de garantizar un adecuado inicio de las actividades académicas, todos los estudiantes deberán verificar la información correspondiente a su matrícula y horario académico dentro de la plataforma institucional. Es importante que cada estudiante conozca las fechas de inicio de sus asignaturas, los docentes responsables, los horarios establecidos y los recursos disponibles para el desarrollo de las clases.\r\n\r\nDurante los primeros días del período académico se podrán realizar actividades de inducción, presentación de las asignaturas, socialización de la planificación académica y explicación de los mecanismos de evaluación. Por este motivo, se recomienda mantener una revisión constante de los avisos publicados por la institución y de las comunicaciones emitidas por los docentes.\r\n\r\nLa participación desde el inicio del período permitirá a los estudiantes organizar adecuadamente sus actividades, cumplir con las responsabilidades académicas y evitar inconvenientes relacionados con fechas de entrega, evaluaciones o asistencia.', 'Académico', 'high', 'published', '2026-09-10 16:22:33', '2026-09-11 16:22:00', 'DOCENTE', '2026-09-10 16:22:33', '2026-09-10 16:22:33'),
+(7, 1, 'ASUNTO: Fecha límite para la entrega de actividades académicas', 'Se recuerda a los estudiantes que deberán completar y entregar las actividades académicas asignadas dentro de las fechas establecidas en la planificación de cada asignatura.', 'Las actividades académicas constituyen un componente fundamental del proceso de aprendizaje y permiten al docente evaluar el nivel de comprensión y aplicación de los conocimientos adquiridos durante las clases. Por esta razón, se solicita a los estudiantes revisar periódicamente las actividades disponibles en la plataforma institucional y verificar las fechas límite establecidas para cada entrega.\r\n\r\nAntes de realizar el envío de una actividad, se recomienda revisar cuidadosamente las instrucciones proporcionadas por el docente, los criterios de evaluación y los archivos o recursos que deben ser incluidos. Asimismo, es importante comprobar que el documento o evidencia haya sido cargado correctamente en la plataforma y que el sistema registre la entrega.\r\n\r\nLas actividades que no sean presentadas dentro del plazo establecido podrían estar sujetas a las condiciones y políticas de evaluación definidas para la asignatura. Se recomienda no esperar hasta los últimos minutos para realizar los envíos, especialmente cuando las actividades requieren archivos de gran tamaño o conexión a Internet.', 'Administrativo', 'medium', 'published', '2026-09-10 16:23:27', '2026-09-20 16:22:00', 'DOCENTE', '2026-09-10 16:23:27', '2026-09-10 16:23:27');
+
 -- --------------------------------------------------------
 
 --
@@ -64,6 +72,13 @@ CREATE TABLE `attachments` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `attachments`
+--
+
+INSERT INTO `attachments` (`id`, `uploaded_by`, `attachable_type`, `attachable_id`, `original_name`, `stored_name`, `mime_type`, `extension`, `size_bytes`, `disk_path`, `checksum_sha256`, `created_at`, `updated_at`) VALUES
+(10, 1, 'announcement', 6, '02 ACTA DE ASIGNACIÓN AL PROGRAMA DE VINCULACIÓN.docx', '078d3c66a5caa1611c1c7b9e0eab6d7c.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'docx', 256886, 'storage/uploads/2026/09/078d3c66a5caa1611c1c7b9e0eab6d7c.docx', '1cba182fe997b49d54dedcc3dee12d590d4bafa54567d2f062280999c5cffa87', '2026-09-10 16:22:33', '2026-09-10 16:22:33');
 
 -- --------------------------------------------------------
 
@@ -108,7 +123,56 @@ INSERT INTO `audit_logs` (`id`, `user_id`, `action`, `entity`, `entity_id`, `old
 (17, 4, 'LOGIN_SUCCESS', 'auth', 4, NULL, NULL, NULL, NULL, '2026-09-08 16:33:52'),
 (18, 4, 'files.download', 'attachment', 1, NULL, '{\"original_name\":\"01 SOLICITUD ESTUDIANTIL .docx\"}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-08 16:35:47'),
 (19, 1, 'announcements.delete', 'announcement', 2, '{\"title\":\"Bienvenida al Portal Institucional\",\"status\":\"published\",\"attachments_removed\":0}', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-08 16:45:38'),
-(20, 1, 'announcements.delete', 'announcement', 1, '{\"title\":\"REGISTRO ÚNICO DE PROVEEDORES\",\"status\":\"published\",\"attachments_removed\":1}', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-08 16:45:44');
+(20, 1, 'announcements.delete', 'announcement', 1, '{\"title\":\"REGISTRO ÚNICO DE PROVEEDORES\",\"status\":\"published\",\"attachments_removed\":1}', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-08 16:45:44'),
+(21, 1, 'LOGIN_SUCCESS', 'auth', 1, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:13:07'),
+(22, 1, 'LOGOUT', 'auth', 1, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:14:00'),
+(23, 1, 'LOGIN_SUCCESS', 'auth', 1, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:45:37'),
+(24, 1, 'LOGOUT', 'auth', 1, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:45:44'),
+(25, 5, 'USER_REGISTERED', 'user', 5, NULL, '{\"username\":\"jrt\",\"email\":\"jail@gmail.com\",\"status\":\"pending\"}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:49:16'),
+(26, 5, 'LOGIN_FAILED', 'auth', 5, NULL, '{\"reason\":\"inactive_or_pending\",\"status\":\"pending\",\"login\":\"jrt\"}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:49:19'),
+(27, 5, 'LOGIN_FAILED', 'auth', 5, NULL, '{\"reason\":\"inactive_or_pending\",\"status\":\"pending\",\"login\":\"jrt\"}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:49:27'),
+(28, NULL, 'LOGIN_FAILED', 'auth', NULL, NULL, '{\"login\":\"jalil@gmail.com\"}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:49:39'),
+(29, NULL, 'LOGIN_FAILED', 'auth', NULL, NULL, '{\"login\":\"jalil@gmail.com\"}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:49:42'),
+(30, 1, 'LOGIN_SUCCESS', 'auth', 1, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:49:49'),
+(31, 1, 'USER_UPDATED', 'user', 5, '{\"username\":\"jrt\",\"email\":\"jail@gmail.com\",\"status\":\"pending\"}', '{\"username\":\"jrt\",\"email\":\"jalil@gmail.com\",\"first_name\":\"Jorman\",\"last_name\":\"Jalil\",\"phone\":null,\"status\":\"inactive\",\"role_ids\":[3]}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:50:23'),
+(32, 1, 'USER_UPDATED', 'user', 5, '{\"username\":\"jrt\",\"email\":\"jalil@gmail.com\",\"status\":\"inactive\"}', '{\"username\":\"jrt\",\"email\":\"jalil@gmail.com\",\"first_name\":\"Jorman\",\"last_name\":\"Jalil\",\"phone\":null,\"status\":\"active\",\"role_ids\":[3]}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:50:38'),
+(33, 6, 'USER_REGISTERED', 'user', 6, NULL, '{\"username\":\"doc06a67d\",\"email\":\"doc06a67d@test.local\",\"status\":\"active\",\"role\":\"DOCENTE\"}', NULL, NULL, '2026-09-10 15:55:09'),
+(34, 6, 'LOGIN_SUCCESS', 'auth', 6, NULL, NULL, NULL, NULL, '2026-09-10 15:55:09'),
+(35, 1, 'LOGIN_SUCCESS', 'auth', 1, NULL, NULL, NULL, NULL, '2026-09-10 15:55:09'),
+(36, 1, 'LOGIN_FAILED', 'auth', 1, NULL, '{\"reason\":\"bad_password\",\"attempts\":1,\"login\":\"admin@uesanlorenzo.edu\"}', NULL, NULL, '2026-09-10 15:55:09'),
+(37, 4, 'LOGIN_SUCCESS', 'auth', 4, NULL, NULL, NULL, NULL, '2026-09-10 15:55:10'),
+(38, 1, 'announcements.create', 'announcement', 3, NULL, '{\"title\":\"Prueba 1\",\"status\":\"published\",\"notifications_created\":2}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:56:23'),
+(39, 1, 'files.upload', 'attachment', 2, NULL, '{\"original_name\":\"Libro1.xlsx\",\"attachable_type\":\"announcement\",\"attachable_id\":3,\"size_bytes\":38411}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:56:23'),
+(40, 1, 'files.upload', 'attachment', 3, NULL, '{\"original_name\":\"LISTA.docx\",\"attachable_type\":\"announcement\",\"attachable_id\":3,\"size_bytes\":13806}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:56:23'),
+(41, 1, 'files.upload', 'attachment', 4, NULL, '{\"original_name\":\"plantilla_bienes.xlsx\",\"attachable_type\":\"announcement\",\"attachable_id\":3,\"size_bytes\":48252}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:56:23'),
+(42, 1, 'files.upload', 'attachment', 5, NULL, '{\"original_name\":\"productos_respaldo_2026-06-05.xlsx\",\"attachable_type\":\"announcement\",\"attachable_id\":3,\"size_bytes\":307906}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:56:23'),
+(43, 1, 'files.upload', 'attachment', 6, NULL, '{\"original_name\":\"PROYECTO DE LAS MESAS.docx\",\"attachable_type\":\"announcement\",\"attachable_id\":3,\"size_bytes\":1220832}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:56:23'),
+(44, 1, 'LOGOUT', 'auth', 1, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:56:55'),
+(45, 7, 'USER_REGISTERED', 'user', 7, NULL, '{\"username\":\"jose\",\"email\":\"jose@gmail.com\",\"status\":\"active\",\"role\":\"DOCENTE\"}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:59:15'),
+(46, 7, 'LOGIN_SUCCESS', 'auth', 7, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:59:15'),
+(47, 1, 'LOGIN_SUCCESS', 'auth', 1, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 15:59:57'),
+(48, 1, 'announcements.create', 'announcement', 4, NULL, '{\"title\":\"Prueba 3\",\"status\":\"draft\",\"notifications_created\":0}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:00:17'),
+(49, 1, 'files.upload', 'attachment', 7, NULL, '{\"original_name\":\"plantilla_bienes.xlsx\",\"attachable_type\":\"announcement\",\"attachable_id\":4,\"size_bytes\":48252}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:00:17'),
+(50, 1, 'files.upload', 'attachment', 8, NULL, '{\"original_name\":\"productos_respaldo_2026-06-05.xlsx\",\"attachable_type\":\"announcement\",\"attachable_id\":4,\"size_bytes\":307906}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:00:17'),
+(51, 1, 'files.upload', 'attachment', 9, NULL, '{\"original_name\":\"PROYECTO DE LAS MESAS.docx\",\"attachable_type\":\"announcement\",\"attachable_id\":4,\"size_bytes\":1220832}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:00:17'),
+(52, 4, 'LOGIN_SUCCESS', 'auth', 4, NULL, NULL, '::1', NULL, '2026-09-10 16:03:59'),
+(53, 7, 'LOGOUT', 'auth', 7, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:05:04'),
+(54, 7, 'LOGIN_SUCCESS', 'auth', 7, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:05:07'),
+(55, 4, 'LOGIN_SUCCESS', 'auth', 4, NULL, NULL, '::1', NULL, '2026-09-10 16:06:50'),
+(56, 4, 'LOGIN_SUCCESS', 'auth', 4, NULL, NULL, '::1', NULL, '2026-09-10 16:07:55'),
+(57, 1, 'LOGIN_SUCCESS', 'auth', 1, NULL, NULL, '::1', NULL, '2026-09-10 16:08:30'),
+(58, 1, 'LOGIN_SUCCESS', 'auth', 1, NULL, NULL, '::1', NULL, '2026-09-10 16:11:02'),
+(59, 4, 'LOGIN_SUCCESS', 'auth', 4, NULL, NULL, '::1', NULL, '2026-09-10 16:11:02'),
+(60, 1, 'LOGIN_SUCCESS', 'auth', 1, NULL, NULL, '::1', NULL, '2026-09-10 16:12:59'),
+(61, 4, 'LOGIN_SUCCESS', 'auth', 4, NULL, NULL, '::1', NULL, '2026-09-10 16:12:59'),
+(62, 1, 'announcements.delete', 'announcement', 5, '{\"title\":\"Aviso campana visible\",\"status\":\"published\",\"attachments_removed\":0}', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:15:46'),
+(63, 1, 'announcements.delete', 'announcement', 4, '{\"title\":\"Prueba 3\",\"status\":\"draft\",\"attachments_removed\":3}', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:15:47'),
+(64, 1, 'announcements.delete', 'announcement', 3, '{\"title\":\"Prueba 1\",\"status\":\"published\",\"attachments_removed\":5}', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:15:50'),
+(65, 7, 'LOGIN_SUCCESS', 'auth', 7, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:21:13'),
+(66, 1, 'LOGIN_SUCCESS', 'auth', 1, NULL, NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:21:46'),
+(67, 1, 'announcements.create', 'announcement', 6, NULL, '{\"title\":\"ASUNTO: Inicio del nuevo período académico\",\"status\":\"published\",\"notifications_created\":3}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:22:33'),
+(68, 1, 'files.upload', 'attachment', 10, NULL, '{\"original_name\":\"02 ACTA DE ASIGNACIÓN AL PROGRAMA DE VINCULACIÓN.docx\",\"attachable_type\":\"announcement\",\"attachable_id\":6,\"size_bytes\":256886}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:22:33'),
+(69, 1, 'announcements.create', 'announcement', 7, NULL, '{\"title\":\"ASUNTO: Fecha límite para la entrega de actividades académicas\",\"status\":\"published\",\"notifications_created\":3}', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0', '2026-09-10 16:23:27');
 
 -- --------------------------------------------------------
 
@@ -158,6 +222,18 @@ CREATE TABLE `notifications` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `user_id`, `announcement_id`, `title`, `body`, `priority`, `type`, `created_at`, `updated_at`) VALUES
+(16, 4, 6, 'ASUNTO: Inicio del nuevo período académico', 'Se informa a todos los estudiantes que se encuentra próximo a iniciar un nuevo período académico. Se recomienda revisar oportunamente el horario de clases, las asignaturas matriculadas y las actividades planificadas para las primeras semanas de formación.', 'high', 'announcement', '2026-09-10 16:22:33', '2026-09-10 16:22:33'),
+(17, 6, 6, 'ASUNTO: Inicio del nuevo período académico', 'Se informa a todos los estudiantes que se encuentra próximo a iniciar un nuevo período académico. Se recomienda revisar oportunamente el horario de clases, las asignaturas matriculadas y las actividades planificadas para las primeras semanas de formación.', 'high', 'announcement', '2026-09-10 16:22:33', '2026-09-10 16:22:33'),
+(18, 7, 6, 'ASUNTO: Inicio del nuevo período académico', 'Se informa a todos los estudiantes que se encuentra próximo a iniciar un nuevo período académico. Se recomienda revisar oportunamente el horario de clases, las asignaturas matriculadas y las actividades planificadas para las primeras semanas de formación.', 'high', 'announcement', '2026-09-10 16:22:33', '2026-09-10 16:22:33'),
+(19, 4, 7, 'ASUNTO: Fecha límite para la entrega de actividades académicas', 'Se recuerda a los estudiantes que deberán completar y entregar las actividades académicas asignadas dentro de las fechas establecidas en la planificación de cada asignatura.', 'medium', 'announcement', '2026-09-10 16:23:27', '2026-09-10 16:23:27'),
+(20, 6, 7, 'ASUNTO: Fecha límite para la entrega de actividades académicas', 'Se recuerda a los estudiantes que deberán completar y entregar las actividades académicas asignadas dentro de las fechas establecidas en la planificación de cada asignatura.', 'medium', 'announcement', '2026-09-10 16:23:27', '2026-09-10 16:23:27'),
+(21, 7, 7, 'ASUNTO: Fecha límite para la entrega de actividades académicas', 'Se recuerda a los estudiantes que deberán completar y entregar las actividades académicas asignadas dentro de las fechas establecidas en la planificación de cada asignatura.', 'medium', 'announcement', '2026-09-10 16:23:27', '2026-09-10 16:23:27');
+
 -- --------------------------------------------------------
 
 --
@@ -170,6 +246,14 @@ CREATE TABLE `notification_reads` (
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `read_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `notification_reads`
+--
+
+INSERT INTO `notification_reads` (`id`, `notification_id`, `user_id`, `read_at`) VALUES
+(2, 18, 7, '2026-09-10 16:23:11'),
+(3, 21, 7, '2026-09-10 16:23:44');
 
 -- --------------------------------------------------------
 
@@ -338,10 +422,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `first_name`, `last_name`, `phone`, `status`, `last_login_at`, `failed_login_attempts`, `locked_until`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@uesanlorenzo.edu', '$2y$10$marlpQYDIcEzGAxSQqBr1...IdqXE8IoKimJIpkRumHqppRn9wsem', 'Admin', 'Sistema', NULL, 'active', '2026-09-08 16:33:52', 1, NULL, '2026-09-08 16:05:45', '2026-09-08 16:33:52'),
+(1, 'admin', 'admin@uesanlorenzo.edu', '$2y$10$marlpQYDIcEzGAxSQqBr1...IdqXE8IoKimJIpkRumHqppRn9wsem', 'Admin', 'Sistema', NULL, 'active', '2026-09-10 16:21:46', 0, NULL, '2026-09-08 16:05:45', '2026-09-10 16:21:46'),
 (2, 'rector', 'rector@uesanlorenzo.edu', '$2y$10$rCOcHP04dUyRfIaPKmg6Se8STf2istvmJUQGUlsnbMnkRyytO3pw6', 'Rector', 'Institucional', NULL, 'active', NULL, 0, NULL, '2026-09-08 16:05:45', '2026-09-08 16:06:41'),
 (3, 'vicerrector', 'vicerrector@uesanlorenzo.edu', '$2y$10$arnMCgXggKTQI7N508BrJ.w9zHrf6DOOq7bsfZC..W1zJW/VOyf3u', 'Vicerrector', 'Académico', NULL, 'active', NULL, 0, NULL, '2026-09-08 16:05:45', '2026-09-08 16:06:41'),
-(4, 'docente', 'docente@uesanlorenzo.edu', '$2y$10$bwx.1RaOu9mhd/FQ9wKewewye0U/ca0cmvU8fka163BuhW1qEhcaW', 'Docente', 'Demo', NULL, 'active', '2026-09-08 16:33:52', 0, NULL, '2026-09-08 16:05:45', '2026-09-08 16:33:52');
+(4, 'docente', 'docente@uesanlorenzo.edu', '$2y$10$bwx.1RaOu9mhd/FQ9wKewewye0U/ca0cmvU8fka163BuhW1qEhcaW', 'Docente', 'Demo', NULL, 'active', '2026-09-10 16:12:59', 0, NULL, '2026-09-08 16:05:45', '2026-09-10 16:12:59'),
+(5, 'jrt', 'jalil@gmail.com', '$2y$10$yytefIcP9RppD./Qv7KYBuiaLOYx32ROCtH92lMDQifOrPASilUF.', 'Jorman', 'Jalil', NULL, 'active', NULL, 0, NULL, '2026-09-10 15:49:16', '2026-09-10 15:50:38'),
+(6, 'doc06a67d', 'doc06a67d@test.local', '$2y$10$Ir2U5Bw4K5V6CJ/9A8FodetGVcox7bMH7.WblTl3fWSgNvsMqCDXC', 'Prueba', 'Docente', NULL, 'active', '2026-09-10 15:55:09', 0, NULL, '2026-09-10 15:55:09', '2026-09-10 15:55:09'),
+(7, 'jose', 'jose@gmail.com', '$2y$10$Z25bGOTGhqFHIx7MWZOPZeNXS/R/OSzhOHU7Re55rZaUgEEJJDha.', 'Jose', 'Delgado', NULL, 'active', '2026-09-10 16:21:13', 0, NULL, '2026-09-10 15:59:15', '2026-09-10 16:21:13');
 
 -- --------------------------------------------------------
 
@@ -364,7 +451,10 @@ INSERT INTO `user_roles` (`id`, `user_id`, `role_id`, `created_at`) VALUES
 (1, 1, 1, '2026-09-08 16:05:45'),
 (2, 2, 2, '2026-09-08 16:05:45'),
 (3, 3, 3, '2026-09-08 16:05:45'),
-(4, 4, 4, '2026-09-08 16:05:45');
+(4, 4, 4, '2026-09-08 16:05:45'),
+(10, 5, 3, '2026-09-10 15:50:38'),
+(11, 6, 4, '2026-09-10 15:55:09'),
+(12, 7, 4, '2026-09-10 15:59:15');
 
 --
 -- Índices para tablas volcadas
@@ -479,19 +569,19 @@ ALTER TABLE `user_roles`
 -- AUTO_INCREMENT de la tabla `announcements`
 --
 ALTER TABLE `announcements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `attachments`
 --
 ALTER TABLE `attachments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `audit_logs`
 --
 ALTER TABLE `audit_logs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -503,13 +593,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT de la tabla `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `notification_reads`
 --
 ALTER TABLE `notification_reads`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
@@ -533,13 +623,13 @@ ALTER TABLE `role_permissions`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `user_roles`
 --
 ALTER TABLE `user_roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Restricciones para tablas volcadas

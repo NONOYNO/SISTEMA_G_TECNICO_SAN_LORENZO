@@ -77,12 +77,17 @@ final class AuthController extends Controller
         if (!$result['ok']) {
             flash('error', $result['message']);
             $_SESSION['_flash']['errors'] = $result['errors'] ?? [];
+            // Si la cuenta se creó pero falló el auto-login, ir al login.
+            if (($result['errors'] ?? []) === [] && str_contains((string) $result['message'], 'iniciar sesión')) {
+                $this->redirect('/login');
+            }
             $this->redirect('/register');
         }
 
         clear_old_input();
-        flash('success', 'Registro enviado. Un administrador debe activar su cuenta.');
-        $this->redirect('/login');
+        auth_login($result['user']);
+        flash('success', 'Registro exitoso. Bienvenido(a) al portal institucional.');
+        $this->redirect('/dashboard');
     }
 
     public function logout(): void

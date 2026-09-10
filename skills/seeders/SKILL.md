@@ -1,9 +1,9 @@
 ---
 name: seeders
-description: Crea seeders de datos de prueba para PortalInfor (roles, permisos, usuarios demo, avisos). Usar para poblar XAMPP local y generar credenciales.md de desarrollo.
+description: Crea seeders de datos de prueba para SISTEMA_G_TECNICO_SAN_LORENZO (roles, permisos, usuarios demo, avisos). Usar para poblar XAMPP local y generar credenciales.md de desarrollo.
 ---
 
-# Seeders — PortalInfor
+# Seeders — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

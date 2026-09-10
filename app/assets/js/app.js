@@ -51,6 +51,48 @@
     return payload;
   }
 
+  function updateUnreadBadges(unread) {
+    if (typeof unread !== 'number' || Number.isNaN(unread)) {
+      return;
+    }
+
+    const pageBadge = document.getElementById('unread-badge');
+    if (pageBadge) {
+      pageBadge.textContent = unread > 0 ? `${unread} sin leer` : 'Todo al día';
+      pageBadge.className = unread > 0 ? 'badge text-bg-danger' : 'text-success small';
+    }
+
+    const navBadge = document.getElementById('navUnreadBadge');
+    const bell = document.getElementById('navNotificationBell');
+    if (navBadge) {
+      const label = unread > 99 ? '99+' : String(unread);
+      navBadge.textContent = label;
+      navBadge.dataset.count = String(unread);
+      if (unread > 0) {
+        navBadge.classList.remove('d-none', 'is-empty');
+        navBadge.hidden = false;
+      } else {
+        navBadge.classList.add('d-none', 'is-empty');
+        navBadge.hidden = true;
+      }
+    }
+    if (bell) {
+      bell.setAttribute(
+        'aria-label',
+        unread > 0 ? `Notificaciones, ${unread} sin leer` : 'Notificaciones'
+      );
+      bell.setAttribute(
+        'title',
+        unread > 0 ? `Notificaciones (${unread} sin leer)` : 'Notificaciones'
+      );
+    }
+
+    const dashBadge = document.querySelector('.widget-notif .bell-badge');
+    if (dashBadge) {
+      dashBadge.textContent = String(unread);
+    }
+  }
+
   function bindMarkReadButtons() {
     document.querySelectorAll('.btn-mark-read').forEach((button) => {
       button.addEventListener('click', async () => {
@@ -77,17 +119,45 @@
             button.remove();
           }
 
-          const badge = document.getElementById('unread-badge');
-          const unread = payload?.data?.unread_count;
-          if (badge && typeof unread === 'number') {
-            badge.textContent = unread > 0 ? `${unread} sin leer` : 'Todo al día';
-            badge.className = unread > 0 ? 'badge text-bg-danger' : 'text-success small';
-          }
+          updateUnreadBadges(payload?.data?.unread_count);
         } catch (error) {
           button.disabled = false;
           window.alert(error.message || 'No se pudo marcar como leída.');
         }
       });
+    });
+  }
+
+  function bindNotificationBadgePolling() {
+    const bell = document.getElementById('navNotificationBell');
+    if (!bell) {
+      return;
+    }
+
+    const url = bell.getAttribute('data-unread-url');
+    if (!url) {
+      return;
+    }
+
+    const poll = async () => {
+      if (document.hidden) {
+        return;
+      }
+      try {
+        const payload = await apiFetch(url, { method: 'GET' });
+        updateUnreadBadges(payload?.data?.unread_count);
+      } catch (_error) {
+        // Silencioso: la campana ya tiene el conteo del render servidor.
+      }
+    };
+
+    // Actualizar enseguida al cargar y luego cada 10s.
+    poll();
+    window.setInterval(poll, 10000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        poll();
+      }
     });
   }
 
@@ -255,13 +325,15 @@
     bindMobileSidebar();
     bindDashboardMotion();
     bindUserMenu();
+    bindNotificationBadgePolling();
   });
 
-  window.PortalInfor = {
+  window.PortalApp = {
     csrfToken,
     apiFetch,
     bindMarkReadButtons,
     bindMultiAttachments,
     bindMobileSidebar,
+    updateUnreadBadges,
   };
 })();

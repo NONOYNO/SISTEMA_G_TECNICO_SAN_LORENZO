@@ -1,9 +1,9 @@
 ---
 name: authorization
-description: Aplica control de acceso RBAC en backend para PortalInfor (permisos granulares, middleware, anti-IDOR). Usar al proteger rutas, acciones AJAX, menús o validar que un rol no escale privilegios.
+description: Aplica control de acceso RBAC en backend para SISTEMA_G_TECNICO_SAN_LORENZO (permisos granulares, middleware, anti-IDOR). Usar al proteger rutas, acciones AJAX, menús o validar que un rol no escale privilegios.
 ---
 
-# Autorización — PortalInfor
+# Autorización — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

@@ -1,9 +1,9 @@
 ---
 name: testing
-description: Define pruebas funcionales, de seguridad y de aceptación para PortalInfor (manuales y automatizadas). Usar antes de aprobar un módulo, tras bugs, o al preparar evidencia QA según SPEC.
+description: Define pruebas funcionales, de seguridad y de aceptación para SISTEMA_G_TECNICO_SAN_LORENZO (manuales y automatizadas). Usar antes de aprobar un módulo, tras bugs, o al preparar evidencia QA según SPEC.
 ---
 
-# Pruebas — PortalInfor
+# Pruebas — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

@@ -1,9 +1,9 @@
 ---
 name: users
-description: Gestiona el módulo de usuarios de PortalInfor (CRUD, búsqueda, filtros, activar/desactivar, asignación de roles, perfil). Usar al implementar o modificar administración de usuarios.
+description: Gestiona el módulo de usuarios de SISTEMA_G_TECNICO_SAN_LORENZO (CRUD, búsqueda, filtros, activar/desactivar, asignación de roles, perfil). Usar al implementar o modificar administración de usuarios.
 ---
 
-# Usuarios — PortalInfor
+# Usuarios — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

@@ -1,9 +1,9 @@
 ---
 name: announcements
-description: Implementa avisos institucionales de PortalInfor (borrador, publicar, archivar, adjuntos, destinatarios). Usar al construir el módulo de avisos del vicerrectorado/admin o su publicación.
+description: Implementa avisos institucionales de SISTEMA_G_TECNICO_SAN_LORENZO (borrador, publicar, archivar, adjuntos, destinatarios). Usar al construir el módulo de avisos del vicerrectorado/admin o su publicación.
 ---
 
-# Avisos (Announcements) — PortalInfor
+# Avisos (Announcements) — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

@@ -1,9 +1,9 @@
 ---
 name: security
-description: Aplica controles de seguridad transversales en PortalInfor (sesiones, CSRF, validación, headers, secretos, auditoría). Usar al endurecer el sistema, revisar configs XAMPP o antes de dar por cerrada una feature.
+description: Aplica controles de seguridad transversales en SISTEMA_G_TECNICO_SAN_LORENZO (sesiones, CSRF, validación, headers, secretos, auditoría). Usar al endurecer el sistema, revisar configs XAMPP o antes de dar por cerrada una feature.
 ---
 
-# Seguridad — PortalInfor
+# Seguridad — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

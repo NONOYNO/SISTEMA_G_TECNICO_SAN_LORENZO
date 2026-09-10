@@ -1,4 +1,4 @@
-# PortalInfor — UE Fiscomisional San Lorenzo
+# SISTEMA_G_TECNICO_SAN_LORENZO — UE Fiscomisional San Lorenzo
 
 Portal informativo-administrativo de la **Unidad Educativa Fiscomisional San Lorenzo**.
 
@@ -18,7 +18,7 @@ Metodología: **SPEC → SKILL → CODE** (POLKDEV)
 
 ## Instalación (XAMPP)
 
-1. Copiar el proyecto en `C:\xampp\htdocs\PortalInfor`
+1. Copiar el proyecto en **cualquier** carpeta bajo `htdocs` (el nombre no importa)
 2. Iniciar **Apache** y **MySQL** desde el XAMPP Control Panel
 3. Crear la base de datos en phpMyAdmin:
    - Nombre: `ue_san_lorenzo`
@@ -27,21 +27,23 @@ Metodología: **SPEC → SKILL → CODE** (POLKDEV)
    ```bash
    copy .env.example .env
    ```
-   (En este repo ya existe `.env` de desarrollo local.)
-5. Verificar variables en `.env` (`DB_*`, `APP_URL`, `APP_KEY`)
+5. Ajustar `.env`: `DB_*`, `APP_KEY`. Dejar **`APP_URL` vacío** para auto-detección (recomendado)
 6. Ejecutar migraciones y seeders:
    ```bash
    php database/migrate.php
    php database/seed.php
-   php database/seeders/DemoAnnouncementSeeder.php
    ```
 7. Pruebas rápidas:
    ```bash
    php tests/run.php
    ```
-8. Abrir en el navegador:
-   - [http://localhost/PortalInfor/](http://localhost/PortalInfor/) → redirige a `app/public/`
-   - Login: [http://localhost/PortalInfor/app/public/login](http://localhost/PortalInfor/app/public/login)
+8. Abrir en el navegador (sustituya `SU_CARPETA` por el nombre real):
+   - `http://localhost/SU_CARPETA/` → redirige a `app/public/`
+   - Login: `http://localhost/SU_CARPETA/app/public/login`
+
+### Producción
+
+DocumentRoot → `app/public`. Con `APP_URL` vacío, la navegación usa la raíz del despliegue sin carpeta hardcodeada. Ver [`docs/despliegue.md`](docs/despliegue.md).
 
 ---
 
@@ -74,7 +76,7 @@ HTTP → Apache (app/public/.htaccess)
 ### Carpetas principales
 
 ```text
-PortalInfor/
+SISTEMA_G_TECNICO_SAN_LORENZO/
 ├── app/
 │   ├── bootstrap.php
 │   ├── Router.php

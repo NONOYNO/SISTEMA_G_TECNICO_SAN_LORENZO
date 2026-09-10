@@ -1,9 +1,9 @@
 ---
 name: architecture
-description: Define y aplica la arquitectura MVC de PortalInfor (Unidad Educativa Fiscomisional San Lorenzo) sobre PHP 8, MySQL PDO, Bootstrap 5, AJAX y XAMPP. Usar al iniciar el proyecto, crear módulos nuevos, reorganizar carpetas o validar que el diseño respete SPEC → SKILL → CODE.
+description: Define y aplica la arquitectura MVC de SISTEMA_G_TECNICO_SAN_LORENZO (Unidad Educativa Fiscomisional San Lorenzo) sobre PHP 8, MySQL PDO, Bootstrap 5, AJAX y XAMPP. Usar al iniciar el proyecto, crear módulos nuevos, reorganizar carpetas o validar que el diseño respete SPEC → SKILL → CODE.
 ---
 
-# Arquitectura — PortalInfor
+# Arquitectura — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 
@@ -35,7 +35,7 @@ Establecer la estructura técnica, capas, dependencias y límites del sistema in
 3. Crear/validar la estructura raíz obligatoria:
 
 ```text
-PortalInfor/
+SISTEMA_G_TECNICO_SAN_LORENZO/
 ├── spec/
 ├── skills/
 ├── app/

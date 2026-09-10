@@ -9,6 +9,12 @@ $initials = strtoupper(
 if ($initials === '') {
     $initials = 'U';
 }
+
+$navUnreadCount = 0;
+if (auth_can('notifications.view') && auth_id() !== null) {
+    $navUnreadCount = (new \App\Services\NotificationService())->countUnread((int) auth_id());
+}
+$navUnreadLabel = $navUnreadCount > 99 ? '99+' : (string) $navUnreadCount;
 ?>
 <nav class="navbar navbar-expand-lg app-navbar px-3">
     <div class="container-fluid gap-2">
@@ -30,8 +36,22 @@ if ($initials === '') {
         </div>
         <div class="d-flex align-items-center gap-2 gap-md-3 ms-auto">
             <?php if (auth_can('notifications.view')): ?>
-                <a href="<?= e(url('/notifications')) ?>" class="text-decoration-none text-light" title="Notificaciones">
-                    <i class="bi bi-bell fs-5"></i>
+                <a
+                    href="<?= e(url('/notifications')) ?>"
+                    id="navNotificationBell"
+                    class="nav-notification-bell text-decoration-none"
+                    title="Notificaciones<?= $navUnreadCount > 0 ? ' (' . $navUnreadCount . ' sin leer)' : '' ?>"
+                    aria-label="<?= e($navUnreadCount > 0
+                        ? 'Notificaciones, ' . $navUnreadCount . ' sin leer'
+                        : 'Notificaciones') ?>"
+                    data-unread-url="<?= e(url('/notifications/unread-count')) ?>"
+                >
+                    <i class="bi bi-bell fs-5" aria-hidden="true"></i>
+                    <span
+                        id="navUnreadBadge"
+                        class="badge rounded-pill text-bg-danger nav-bell-badge<?= $navUnreadCount > 0 ? '' : ' d-none is-empty' ?>"
+                        data-count="<?= (int) $navUnreadCount ?>"
+                    ><?= e($navUnreadLabel) ?></span>
                 </a>
             <?php endif; ?>
             <div class="dropdown">

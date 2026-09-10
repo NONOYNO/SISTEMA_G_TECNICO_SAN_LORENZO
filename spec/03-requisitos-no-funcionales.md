@@ -1,6 +1,6 @@
 # SPEC 03 — Requisitos No Funcionales (RNF)
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
 **Estado de implementación:** PENDING
 
@@ -8,7 +8,7 @@
 
 ## 1. Objetivo
 
-Establecer requisitos no funcionales de rendimiento, seguridad, usabilidad, diseño responsive, mantenibilidad y compatibilidad con entorno XAMPP para el PortalInfor.
+Establecer requisitos no funcionales de rendimiento, seguridad, usabilidad, diseño responsive, mantenibilidad y compatibilidad con entorno XAMPP para el SISTEMA_G_TECNICO_SAN_LORENZO.
 
 ## 2. Alcance
 
@@ -103,7 +103,7 @@ No define flujos de negocio; condiciona la calidad de todos los flujos RF:
 1. Si un cambio degrada seguridad (RNF-SEC), no se fusiona.
 2. Features P0 no se aceptan sin paginación cuando listan colecciones grandes.
 3. Cualquier upload supera el límite ⇒ rechazo controlado, no 500 opaco.
-4. En XAMPP, documentar VirtualHost o alias `http://localhost/PortalInfor/public`.
+4. En XAMPP, documentar VirtualHost o alias `http://localhost/SISTEMA_G_TECNICO_SAN_LORENZO/public`.
 
 ## 7. Estructura de datos
 
@@ -115,7 +115,7 @@ Configuración relevante (no tabla):
 | `SESSION_LIFETIME` | 120 (min) | timeout |
 | `LOGIN_MAX_ATTEMPTS` | 5 | brute force |
 | `UPLOAD_MAX_MB` | 10 | archivos |
-| `APP_URL` | http://localhost/PortalInfor/public | links |
+| `APP_URL` | http://localhost/SISTEMA_G_TECNICO_SAN_LORENZO/public | links |
 
 ## 8. Validaciones
 

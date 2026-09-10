@@ -4,20 +4,27 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 
 final class AuthService
 {
     private const MAX_ATTEMPTS = 5;
     private const LOCK_MINUTES = 15;
+    private const DEFAULT_REGISTER_ROLE = 'DOCENTE';
 
     private UserRepository $users;
+    private RoleRepository $roles;
     private AuditService $audit;
 
-    public function __construct(?UserRepository $users = null, ?AuditService $audit = null)
-    {
+    public function __construct(
+        ?UserRepository $users = null,
+        ?AuditService $audit = null,
+        ?RoleRepository $roles = null
+    ) {
         $this->users = $users ?? new UserRepository();
         $this->audit = $audit ?? new AuditService();
+        $this->roles = $roles ?? new RoleRepository();
     }
 
     /**
@@ -156,6 +163,11 @@ final class AuthService
             $errors['username'] = 'El nombre de usuario ya está en uso.';
         }
 
+        $docenteRole = $this->roles->findByName(self::DEFAULT_REGISTER_ROLE);
+        if ($docenteRole === null) {
+            $errors['role'] = 'No se puede completar el registro: rol DOCENTE no configurado. Contacte al administrador.';
+        }
+
         if ($errors !== []) {
             return [
                 'ok' => false,
@@ -170,30 +182,31 @@ final class AuthService
             'password' => password_hash($password, PASSWORD_DEFAULT),
             'first_name' => $firstName,
             'last_name' => $lastName,
-            'status' => 'pending',
+            'status' => 'active',
         ]);
 
-        $user = $this->users->findById($id) ?? [
-            'id' => $id,
-            'username' => $username,
-            'email' => $email,
-            'first_name' => $firstName,
-            'last_name' => $lastName,
-            'status' => 'pending',
-            'name' => trim($firstName . ' ' . $lastName),
-        ];
-
-        unset($user['password']);
+        $this->users->syncRoles($id, [(int) $docenteRole['id']]);
 
         $this->audit->log($id, 'USER_REGISTERED', 'user', $id, null, [
             'username' => $username,
             'email' => $email,
-            'status' => 'pending',
+            'status' => 'active',
+            'role' => self::DEFAULT_REGISTER_ROLE,
         ]);
+
+        $sessionUser = $this->attempt($username, $password);
+
+        if ($sessionUser === false) {
+            return [
+                'ok' => false,
+                'message' => 'Cuenta creada, pero no se pudo iniciar sesión automáticamente. Inicie sesión manualmente.',
+                'errors' => [],
+            ];
+        }
 
         return [
             'ok' => true,
-            'user' => $user,
+            'user' => $sessionUser,
         ];
     }
 

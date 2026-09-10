@@ -1,9 +1,9 @@
 ---
 name: php
-description: Estándares de PHP 8 para PortalInfor en XAMPP (tipado, PDO, sesiones, errores, PSR práctico). Usar al escribir o revisar código backend PHP, helpers, middleware, servicios o endpoints AJAX.
+description: Estándares de PHP 8 para SISTEMA_G_TECNICO_SAN_LORENZO en XAMPP (tipado, PDO, sesiones, errores, PSR práctico). Usar al escribir o revisar código backend PHP, helpers, middleware, servicios o endpoints AJAX.
 ---
 
-# PHP 8 — PortalInfor
+# PHP 8 — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

@@ -1,6 +1,6 @@
 # SPEC 05 — Seguridad
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
 **Estado de implementación:** PENDING
 
@@ -8,7 +8,7 @@
 
 ## 1. Objetivo
 
-Especificar los controles de seguridad obligatorios del PortalInfor: sesiones endurecidas, hashing de contraseñas, CSRF, XSS, prevención SQLi con PDO, headers HTTP y uploads seguros, alineados a buenas prácticas OWASP.
+Especificar los controles de seguridad obligatorios del SISTEMA_G_TECNICO_SAN_LORENZO: sesiones endurecidas, hashing de contraseñas, CSRF, XSS, prevención SQLi con PDO, headers HTTP y uploads seguros, alineados a buenas prácticas OWASP.
 
 ## 2. Alcance
 
@@ -113,7 +113,7 @@ Sesión PHP (claves sugeridas):
 
 Esta SPEC **es** el núcleo de seguridad. Controles mínimos OWASP mapeados:
 
-| Riesgo | Control PortalInfor |
+| Riesgo | Control SISTEMA_G_TECNICO_SAN_LORENZO |
 |--------|---------------------|
 | Injection | PDO prepared |
 | Broken Auth | hash, sesión, lockout |

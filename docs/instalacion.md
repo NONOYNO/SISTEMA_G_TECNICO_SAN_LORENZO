@@ -1,4 +1,4 @@
-# Instalación — PortalInfor
+# Instalación — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Requisitos
 
@@ -8,7 +8,7 @@
 
 ## Pasos
 
-1. Ubicar el proyecto en `C:\xampp\htdocs\PortalInfor`
+1. Ubicar el proyecto en `C:\xampp\htdocs\SISTEMA_G_TECNICO_SAN_LORENZO`
 2. Iniciar Apache y MySQL en el panel de XAMPP
 3. Copiar `.env.example` a `.env` y ajustar `DB_*`, `APP_URL`, `APP_KEY`
 4. Desde la raíz del proyecto:
@@ -18,7 +18,7 @@ php database/migrate.php
 php database/seed.php
 ```
 
-5. Abrir [http://localhost/PortalInfor/](http://localhost/PortalInfor/)
+5. Abrir [http://localhost/SISTEMA_G_TECNICO_SAN_LORENZO/](http://localhost/SISTEMA_G_TECNICO_SAN_LORENZO/)
 
 ## Credenciales
 

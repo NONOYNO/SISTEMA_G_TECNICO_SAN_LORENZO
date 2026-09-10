@@ -1,9 +1,9 @@
 ---
 name: authentication
-description: Implementa login, registro, logout, sesiones seguras y hashing de contraseñas en PortalInfor. Usar al construir o auditar autenticación, timeout de sesión, CSRF de login o protección anti fuerza bruta.
+description: Implementa login, registro, logout, sesiones seguras y hashing de contraseñas en SISTEMA_G_TECNICO_SAN_LORENZO. Usar al construir o auditar autenticación, timeout de sesión, CSRF de login o protección anti fuerza bruta.
 ---
 
-# Autenticación — PortalInfor
+# Autenticación — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 
@@ -34,7 +34,7 @@ Implementar autenticación segura de usuarios del portal (ADMIN, RECTOR, VICERRE
 2. Crear tablas/migraciones de `users` si aún no existen (skills `mysql`, `migrations`).
 3. Implementar `AuthController` + `AuthService`.
 4. **Login**: validar usuario/correo + contraseña; `password_verify`; regenerar sesión; registrar audit.
-5. **Registro**: validar campos; hash con `password_hash(PASSWORD_DEFAULT)`; no asignar permisos libres desde el form; estado inicial según SPEC.
+5. **Registro**: validar campos; hash con `password_hash(PASSWORD_DEFAULT)`; estado inicial **`active`**; asignar solo rol **DOCENTE** vía `RoleRepository::findByName('DOCENTE')` + `syncRoles` (nunca ADMIN desde el form); auditar; **auto-login** y redirect `/dashboard`.
 6. **Logout**: destruir sesión, invalidar cookie, audit.
 7. Middleware `Auth` / `Guest` en rutas.
 8. Timeout de inactividad y mensaje de sesión expirada.
@@ -70,7 +70,8 @@ Implementar autenticación segura de usuarios del portal (ADMIN, RECTOR, VICERRE
 - [ ] Login correcto con cada rol seeder.
 - [ ] Login con password incorrecta falla y audita.
 - [ ] Usuario inactivo no entra.
-- [ ] Registro crea hash válido y no asigna rol ADMIN.
+- [ ] Registro crea hash válido, status `active`, rol DOCENTE (no ADMIN).
+- [ ] Tras registro exitoso hay sesión y redirect a dashboard.
 - [ ] Confirmación de contraseña valida mismatch.
 - [ ] Logout limpia sesión; rutas protegidas redirigen a login.
 - [ ] Sesión regenerada (ID distinto post-login).

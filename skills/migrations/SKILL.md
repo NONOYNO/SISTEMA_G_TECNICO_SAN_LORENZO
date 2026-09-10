@@ -1,9 +1,9 @@
 ---
 name: migrations
-description: Crea y aplica migraciones versionadas MySQL para PortalInfor (up/down, FKs, utf8mb4). Usar al cambiar esquema, añadir tablas o preparar base limpia en XAMPP.
+description: Crea y aplica migraciones versionadas MySQL para SISTEMA_G_TECNICO_SAN_LORENZO (up/down, FKs, utf8mb4). Usar al cambiar esquema, añadir tablas o preparar base limpia en XAMPP.
 ---
 
-# Migraciones — PortalInfor
+# Migraciones — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

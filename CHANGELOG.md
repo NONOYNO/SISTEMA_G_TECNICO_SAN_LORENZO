@@ -1,6 +1,6 @@
 # Changelog
 
-Todos los cambios relevantes del proyecto PortalInfor se documentan en este archivo.
+Todos los cambios relevantes del proyecto SISTEMA_G_TECNICO_SAN_LORENZO se documentan en este archivo.
 
 ## [0.2.0] - 2026-09-08
 

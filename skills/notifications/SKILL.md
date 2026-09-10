@@ -1,9 +1,9 @@
 ---
 name: notifications
-description: Implementa notificaciones institucionales de PortalInfor (crear, listar en cards, marcar leídas, destinatarios, AJAX). Usar al construir el módulo de notificaciones o su integración con avisos y archivos.
+description: Implementa notificaciones institucionales de SISTEMA_G_TECNICO_SAN_LORENZO (crear, listar en cards, marcar leídas, destinatarios, AJAX). Usar al construir el módulo de notificaciones o su integración con avisos y archivos.
 ---
 
-# Notificaciones — PortalInfor
+# Notificaciones — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

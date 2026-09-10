@@ -1,9 +1,9 @@
 ---
 name: ajax
-description: Define contratos AJAX/Fetch seguros para PortalInfor (JSON, CSRF, authz, errores). Usar al implementar búsquedas, filtros, mark-as-read, paginación dinámica o cualquier mutación sin recarga.
+description: Define contratos AJAX/Fetch seguros para SISTEMA_G_TECNICO_SAN_LORENZO (JSON, CSRF, authz, errores). Usar al implementar búsquedas, filtros, mark-as-read, paginación dinámica o cualquier mutación sin recarga.
 ---
 
-# AJAX — PortalInfor
+# AJAX — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

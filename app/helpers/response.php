@@ -44,27 +44,109 @@ function config(string $key, mixed $default = null): mixed
     return $value;
 }
 
+/**
+ * Prefijo de ruta del front controller (ej. "" o "/mi-portal/app/public").
+ * No depende del nombre de carpeta del proyecto.
+ */
+function app_base_path(): string
+{
+    static $resolved = null;
+
+    if ($resolved !== null) {
+        return $resolved;
+    }
+
+    $configured = trim((string) env('APP_URL', ''));
+    if ($configured !== '') {
+        $fromConfig = parse_url($configured, PHP_URL_PATH);
+        if (is_string($fromConfig) && $fromConfig !== '' && $fromConfig !== '/') {
+            $resolved = rtrim(str_replace('\\', '/', $fromConfig), '/');
+
+            return $resolved;
+        }
+        if (is_string($fromConfig) && ($fromConfig === '' || $fromConfig === '/')) {
+            $resolved = '';
+
+            return $resolved;
+        }
+    }
+
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    if (!is_string($scriptName) || $scriptName === '') {
+        $resolved = '';
+
+        return $resolved;
+    }
+
+    $dir = str_replace('\\', '/', dirname($scriptName));
+    if ($dir === '/' || $dir === '\\' || $dir === '.' || $dir === '') {
+        $resolved = '';
+
+        return $resolved;
+    }
+
+    $resolved = rtrim($dir, '/');
+
+    return $resolved;
+}
+
+/**
+ * URL absoluta base de la app (esquema + host + base path).
+ * Si APP_URL está vacío, se detecta desde la petición actual.
+ */
+function app_base_url(): string
+{
+    static $resolved = null;
+
+    if ($resolved !== null) {
+        return $resolved;
+    }
+
+    $configured = trim((string) env('APP_URL', ''));
+    if ($configured !== '') {
+        $resolved = rtrim($configured, '/');
+
+        return $resolved;
+    }
+
+    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || ((string) ($_SERVER['SERVER_PORT'] ?? '') === '443')
+        || (strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https');
+
+    $scheme = $https ? 'https' : 'http';
+    $host = (string) ($_SERVER['HTTP_HOST'] ?? 'localhost');
+    $path = app_base_path();
+
+    $resolved = $scheme . '://' . $host . $path;
+
+    return $resolved;
+}
+
 function url(string $path = ''): string
 {
-    $base = rtrim((string) config('app.url', env('APP_URL', '')), '/');
-    $path = '/' . ltrim($path, '/');
+    $base = rtrim(app_base_url(), '/');
+    $path = trim($path);
 
-    if ($path === '/') {
+    if ($path === '' || $path === '/') {
         return $base . '/';
     }
 
-    return $base . $path;
+    return $base . '/' . ltrim($path, '/');
 }
 
 function asset(string $path): string
 {
-    $base = rtrim((string) config('app.url', env('APP_URL', '')), '/');
-    $assetsBase = preg_replace('#/public$#', '/assets', $base) ?: ($base . '/../assets');
-    $url = rtrim((string) $assetsBase, '/') . '/' . ltrim($path, '/');
+    $path = ltrim(str_replace('\\', '/', $path), '/');
+    $base = rtrim(app_base_url(), '/');
+    $url = $base . '/assets/' . $path;
 
-    $local = app_path('assets/' . ltrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path), DIRECTORY_SEPARATOR));
-    if (is_file($local)) {
-        $url .= '?v=' . (string) filemtime($local);
+    $localPublic = app_path('public/assets/' . str_replace('/', DIRECTORY_SEPARATOR, $path));
+    $localApp = app_path('assets/' . str_replace('/', DIRECTORY_SEPARATOR, $path));
+
+    if (is_file($localPublic)) {
+        $url .= '?v=' . (string) filemtime($localPublic);
+    } elseif (is_file($localApp)) {
+        $url .= '?v=' . (string) filemtime($localApp);
     }
 
     return $url;
@@ -181,5 +263,63 @@ function abort(int $status, string $message = ''): void
         'message' => $message,
     ], $layout);
 
+    exit;
+}
+
+/**
+ * Sirve un asset estático desde app/assets o app/public/assets.
+ */
+function serve_app_asset(string $relativePath): void
+{
+    $relativePath = str_replace('\\', '/', $relativePath);
+    $relativePath = ltrim($relativePath, '/');
+
+    if ($relativePath === '' || str_contains($relativePath, '..')) {
+        http_response_code(404);
+        echo 'Asset no encontrado.';
+        exit;
+    }
+
+    $candidates = [
+        app_path('public/assets/' . str_replace('/', DIRECTORY_SEPARATOR, $relativePath)),
+        app_path('assets/' . str_replace('/', DIRECTORY_SEPARATOR, $relativePath)),
+    ];
+
+    $file = null;
+    foreach ($candidates as $candidate) {
+        if (is_file($candidate)) {
+            $file = $candidate;
+            break;
+        }
+    }
+
+    if ($file === null) {
+        http_response_code(404);
+        echo 'Asset no encontrado.';
+        exit;
+    }
+
+    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+    $types = [
+        'css' => 'text/css; charset=utf-8',
+        'js' => 'application/javascript; charset=utf-8',
+        'mjs' => 'application/javascript; charset=utf-8',
+        'png' => 'image/png',
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'gif' => 'image/gif',
+        'webp' => 'image/webp',
+        'svg' => 'image/svg+xml',
+        'ico' => 'image/x-icon',
+        'woff' => 'font/woff',
+        'woff2' => 'font/woff2',
+        'ttf' => 'font/ttf',
+        'map' => 'application/json',
+    ];
+
+    header('Content-Type: ' . ($types[$ext] ?? 'application/octet-stream'));
+    header('Cache-Control: public, max-age=86400');
+    header('X-Content-Type-Options: nosniff');
+    readfile($file);
     exit;
 }

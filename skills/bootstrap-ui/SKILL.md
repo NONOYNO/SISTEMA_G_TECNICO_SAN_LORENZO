@@ -1,9 +1,9 @@
 ---
 name: bootstrap-ui
-description: Aplica UI Bootstrap 5 institucional de PortalInfor con paleta celeste/azul/blanco, cards, navbar, sidebar y responsive. Usar al diseñar vistas, dashboards, formularios, alertas o componentes visuales.
+description: Aplica UI Bootstrap 5 institucional de SISTEMA_G_TECNICO_SAN_LORENZO con paleta celeste/azul/blanco, cards, navbar, sidebar y responsive. Usar al diseñar vistas, dashboards, formularios, alertas o componentes visuales.
 ---
 
-# Bootstrap UI — PortalInfor
+# Bootstrap UI — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 
@@ -25,6 +25,7 @@ Definir la interfaz institucional del portal de la Unidad Educativa Fiscomisiona
 
 - `spec/06-ui-ux.md`
 - `spec/26-navegacion-movil.md`
+- `spec/28-navbar-guest.md` (navbar guest: Inicio de sesión / Registro)
 - `spec/13-dashboard.md`
 - `spec/10-avisos.md`
 - `spec/11-notificaciones.md`
@@ -53,6 +54,7 @@ Definir la interfaz institucional del portal de la Unidad Educativa Fiscomisiona
 10. Verificar breakpoints (móvil primero cuando aplique).
 11. Iconos Font Awesome (o equivalente) con significado, no decoración excesiva.
 12. **Navegación móvil (SPEC 26):** implementar botón hamburguesa en navbar (&lt; lg) que abre/cierra el sidebar off-canvas.
+13. **Navbar guest (SPEC 28):** en layout auth, barra horizontal con Inicio de sesión y Registro; skill `skills/navbar-guest/SKILL.md`.
 
 ### Navegación móvil — menú hamburguesa (obligatorio)
 

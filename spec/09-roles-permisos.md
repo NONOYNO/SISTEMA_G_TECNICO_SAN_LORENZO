@@ -1,6 +1,6 @@
 # SPEC 09 — Roles y Permisos (RBAC)
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
 **Estado de implementación:** PENDING
 
@@ -8,7 +8,7 @@
 
 ## 1. Objetivo
 
-Definir el control de acceso basado en roles (RBAC) con permisos granulares para proteger módulos y acciones del PortalInfor.
+Definir el control de acceso basado en roles (RBAC) con permisos granulares para proteger módulos y acciones del SISTEMA_G_TECNICO_SAN_LORENZO.
 
 ## 2. Alcance
 

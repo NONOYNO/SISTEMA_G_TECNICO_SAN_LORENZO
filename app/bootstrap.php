@@ -118,11 +118,15 @@ spl_autoload_register(static function (string $class): void {
 
 $lifetimeMinutes = (int) env('SESSION_LIFETIME', 120);
 $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+$cookiePath = app_base_path();
+if ($cookiePath === '') {
+    $cookiePath = '/';
+}
 
-session_name('portalinfor_session');
+session_name('ue_san_lorenzo_session');
 session_set_cookie_params([
     'lifetime' => $lifetimeMinutes * 60,
-    'path' => '/',
+    'path' => $cookiePath,
     'secure' => $secure,
     'httponly' => true,
     'samesite' => 'Lax',

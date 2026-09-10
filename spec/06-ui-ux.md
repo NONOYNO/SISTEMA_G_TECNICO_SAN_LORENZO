@@ -1,6 +1,6 @@
 # SPEC 06 — UI / UX
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
 **Estado de implementación:** PENDING
 
@@ -8,7 +8,7 @@
 
 ## 1. Objetivo
 
-Definir la identidad visual y patrones de interfaz del PortalInfor: paleta celeste/azul/blanco, uso de Bootstrap 5, cards, navbar, sidebar y comportamiento responsive para una experiencia institucional clara y usable.
+Definir la identidad visual y patrones de interfaz del SISTEMA_G_TECNICO_SAN_LORENZO: paleta celeste/azul/blanco, uso de Bootstrap 5, cards, navbar, sidebar y comportamiento responsive para una experiencia institucional clara y usable.
 
 ## 2. Alcance
 
@@ -94,7 +94,7 @@ Componentes de vista:
 ## 10. Interfaz
 
 ### Navbar
-- Logo/nombre: “UEF San Lorenzo” / PortalInfor.
+- Logo/nombre: “UEF San Lorenzo” / SISTEMA_G_TECNICO_SAN_LORENZO.
 - Campana notificaciones + badge count.
 - Dropdown: perfil, cambiar password, logout.
 

@@ -1,6 +1,6 @@
-# SPEC 01 — Arquitectura MVC PortalInfor
+# SPEC 01 — Arquitectura MVC SISTEMA_G_TECNICO_SAN_LORENZO
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
 **Estado de implementación:** PENDING
 
@@ -83,7 +83,7 @@ JS (fetch/XHR) + header X-CSRF-TOKEN / token en body
 No aplica esquema de BD aquí; estructura de carpetas:
 
 ```text
-PortalInfor/
+SISTEMA_G_TECNICO_SAN_LORENZO/
 ├── app/
 │   ├── Controllers/
 │   ├── Models/

@@ -9,7 +9,7 @@
 
 ## 1. Objetivo
 
-Documentar los pasos concretos para desplegar el portal en XAMPP sobre Windows en `C:\xampp\htdocs\PortalInfor`, dejando Apache, MySQL y la aplicación operativos de forma segura para desarrollo.
+Documentar los pasos concretos para desplegar el portal en XAMPP sobre Windows en `C:\xampp\htdocs\SISTEMA_G_TECNICO_SAN_LORENZO`, dejando Apache, MySQL y la aplicación operativos de forma segura para desarrollo.
 
 ## 2. Alcance
 
@@ -37,7 +37,7 @@ Documentar los pasos concretos para desplegar el portal en XAMPP sobre Windows e
 ## 4. Requisitos
 
 ### Funcionales de despliegue
-- RF-X01: Código ubicado en `C:\xampp\htdocs\PortalInfor`.
+- RF-X01: Código ubicado en `C:\xampp\htdocs\SISTEMA_G_TECNICO_SAN_LORENZO`.
 - RF-X02: Apache y MySQL iniciados desde XAMPP Control Panel.
 - RF-X03: PHP 8.x activo (`php -v`).
 - RF-X04: Extensiones: `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `json`.
@@ -45,7 +45,7 @@ Documentar los pasos concretos para desplegar el portal en XAMPP sobre Windows e
 - RF-X06: DB `ue_san_lorenzo` creada.
 - RF-X07: `.env` configurado desde `.env.example`.
 - RF-X08: Migraciones + seeders ejecutados.
-- RF-X09: App accesible en `http://localhost/PortalInfor/` (o vhost documentado).
+- RF-X09: App accesible en `http://localhost/SISTEMA_G_TECNICO_SAN_LORENZO/` (o vhost documentado).
 
 ### No funcionales
 - RNF-X01: Tiempo de setup < 30 min en máquina estándar.
@@ -55,7 +55,7 @@ Documentar los pasos concretos para desplegar el portal en XAMPP sobre Windows e
 
 ```text
 1. Instalar XAMPP (PHP 8+) en C:\xampp
-2. Clonar/copiar proyecto a C:\xampp\htdocs\PortalInfor
+2. Clonar/copiar proyecto a C:\xampp\htdocs\SISTEMA_G_TECNICO_SAN_LORENZO
 3. Iniciar Apache + MySQL
 4. Crear DB en phpMyAdmin: ue_san_lorenzo (utf8mb4)
 5. Copiar .env.example → .env y editar:
@@ -64,7 +64,7 @@ Documentar los pasos concretos para desplegar el portal en XAMPP sobre Windows e
    DB_DATABASE=ue_san_lorenzo
    DB_USERNAME=root
    DB_PASSWORD= (vacío por defecto XAMPP o la configurada)
-   APP_URL=http://localhost/PortalInfor
+   APP_URL=http://localhost/SISTEMA_G_TECNICO_SAN_LORENZO
    APP_ENV=local
 6. Crear carpetas writables: storage/, uploads/, logs/, storage/backups/
 7. Configurar Apache:
@@ -79,9 +79,9 @@ Documentar los pasos concretos para desplegar el portal en XAMPP sobre Windows e
 ### VirtualHost opcional
 ```apache
 <VirtualHost *:80>
-    DocumentRoot "C:/xampp/htdocs/PortalInfor/app/public"
+    DocumentRoot "C:/xampp/htdocs/SISTEMA_G_TECNICO_SAN_LORENZO/app/public"
     ServerName uesanlorenzo.local
-    <Directory "C:/xampp/htdocs/PortalInfor/app/public">
+    <Directory "C:/xampp/htdocs/SISTEMA_G_TECNICO_SAN_LORENZO/app/public">
         AllowOverride All
         Require all granted
     </Directory>
@@ -92,7 +92,7 @@ Agregar en `C:\Windows\System32\drivers\etc\hosts`: `127.0.0.1 uesanlorenzo.loca
 ## 6. Reglas de negocio
 
 - RN-X01: DocumentRoot recomendado = `app/public` (no exponer todo el repo).
-- RN-X02: Si se usa `htdocs/PortalInfor` sin public, proteger rutas sensibles con `.htaccess`.
+- RN-X02: Si se usa `htdocs/SISTEMA_G_TECNICO_SAN_LORENZO` sin public, proteger rutas sensibles con `.htaccess`.
 - RN-X03: `APP_DEBUG=true` solo en local.
 - RN-X04: No versionar `.env`.
 - RN-X05: Puerto 80/443 libres; si ocupados, ajustar Apache.
@@ -105,7 +105,7 @@ Agregar en `C:\Windows\System32\drivers\etc\hosts`: `127.0.0.1 uesanlorenzo.loca
 APP_NAME="UE San Lorenzo"
 APP_ENV=local
 APP_DEBUG=true
-APP_URL=http://localhost/PortalInfor
+APP_URL=http://localhost/SISTEMA_G_TECNICO_SAN_LORENZO
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -126,7 +126,7 @@ Collation: utf8mb4_unicode_ci
 
 ## 8. Validaciones post-install
 
-- [ ] `http://localhost/PortalInfor` responde 200.
+- [ ] `http://localhost/SISTEMA_G_TECNICO_SAN_LORENZO` responde 200.
 - [ ] `php -m` muestra `pdo_mysql`.
 - [ ] Login `admin@uesanlorenzo.edu` / `Admin123!` OK.
 - [ ] Escritura en `storage/` y `uploads/` OK.
@@ -203,7 +203,7 @@ SQLSTATE[HY000] [1045] Access denied
 
 ## 15. Criterios de aceptación
 
-- [ ] Proyecto corre desde `C:\xampp\htdocs\PortalInfor`.
+- [ ] Proyecto corre desde `C:\xampp\htdocs\SISTEMA_G_TECNICO_SAN_LORENZO`.
 - [ ] Apache + MySQL + PHP 8 operativos.
 - [ ] Migraciones y seeders aplicados.
 - [ ] Logins de prueba funcionan.

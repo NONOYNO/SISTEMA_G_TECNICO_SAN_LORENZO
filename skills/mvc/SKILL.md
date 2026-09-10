@@ -1,9 +1,9 @@
 ---
 name: mvc
-description: Aplica el patrón Model-View-Controller en PortalInfor (controllers delgados, models/repositories, views Bootstrap, services). Usar al crear endpoints, pantallas o reorganizar lógica entre capas.
+description: Aplica el patrón Model-View-Controller en SISTEMA_G_TECNICO_SAN_LORENZO (controllers delgados, models/repositories, views Bootstrap, services). Usar al crear endpoints, pantallas o reorganizar lógica entre capas.
 ---
 
-# MVC — PortalInfor
+# MVC — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

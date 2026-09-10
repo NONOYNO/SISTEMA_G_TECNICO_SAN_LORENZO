@@ -1,6 +1,6 @@
-# SPEC 00 — Master Spec: PortalInfor
+# SPEC 00 — Master Spec: SISTEMA_G_TECNICO_SAN_LORENZO
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
 **Principio rector:** SPEC FIRST + SKILL FIRST + CODE SECOND  
 **Estado de implementación:** PENDING

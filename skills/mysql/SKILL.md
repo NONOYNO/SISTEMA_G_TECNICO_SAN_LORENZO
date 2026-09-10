@@ -1,9 +1,9 @@
 ---
 name: mysql
-description: Diseño y acceso MySQL/MariaDB con PDO para PortalInfor (esquema, índices, FKs, consultas preparadas, integridad). Usar al modelar tablas, escribir queries, optimizar o revisar la capa de datos.
+description: Diseño y acceso MySQL/MariaDB con PDO para SISTEMA_G_TECNICO_SAN_LORENZO (esquema, índices, FKs, consultas preparadas, integridad). Usar al modelar tablas, escribir queries, optimizar o revisar la capa de datos.
 ---
 
-# MySQL / PDO — PortalInfor
+# MySQL / PDO — SISTEMA_G_TECNICO_SAN_LORENZO
 
 ## Nombre
 

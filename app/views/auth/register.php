@@ -2,7 +2,7 @@
 <form method="post" action="<?= e(url('/register')) ?>" novalidate>
     <?= csrf_field() ?>
     <h2 class="h5 mb-3 text-center">Registro</h2>
-    <p class="text-muted small">Complete el formulario. Su cuenta quedará pendiente de activación.</p>
+    <p class="text-muted small">Complete el formulario. Su cuenta se activará con el perfil docente e iniciará sesión de inmediato.</p>
 
     <div class="row g-2">
         <div class="col-md-6 mb-3">
@@ -61,7 +61,7 @@
         <?php endif; ?>
     </div>
 
-    <button type="submit" class="btn btn-primary w-100">Enviar solicitud</button>
+    <button type="submit" class="btn btn-primary w-100">Crear cuenta e ingresar</button>
     <p class="text-center small mt-3 mb-0">
         <a href="<?= e(url('/login')) ?>">Volver al login</a>
     </p>

@@ -26,33 +26,54 @@ final class AnnouncementService
      * @param array{roles?:list<string>, can_manage?:bool, user_id?:int} $viewer
      * @return list<array<string, mixed>>
      */
-    public function listForViewer(array $viewer): array
+    public function listForViewer(array $viewer, ?string $statusFilter = null): array
     {
         $canManage = (bool) ($viewer['can_manage'] ?? false);
-        $userId = (int) ($viewer['user_id'] ?? 0);
-        $roles = array_map('strtoupper', $viewer['roles'] ?? []);
+        $roles = array_values(array_filter(array_map(
+            static fn ($r): string => strtoupper(trim((string) $r)),
+            is_array($viewer['roles'] ?? null) ? $viewer['roles'] : []
+        )));
+
+        $statusFilter = $statusFilter !== null ? strtolower(trim($statusFilter)) : null;
+        if ($statusFilter !== null && !in_array($statusFilter, ['draft', 'published', 'archived'], true)) {
+            $statusFilter = null;
+        }
+
+        // Más reciente primero (último enviado / publicado arriba).
+        $orderBy = 'ORDER BY COALESCE(a.publish_at, a.updated_at, a.created_at) DESC, a.id DESC';
 
         if ($canManage) {
-            $stmt = $this->pdo->query(
-                'SELECT a.*,
-                        CONCAT(u.first_name, \' \', u.last_name) AS author_name
-                 FROM announcements a
-                 INNER JOIN users u ON u.id = a.author_id
-                 ORDER BY a.created_at DESC, a.id DESC'
-            );
+            $sql = 'SELECT a.*,
+                           CONCAT(u.first_name, \' \', u.last_name) AS author_name,
+                           COALESCE(a.publish_at, a.updated_at, a.created_at) AS sort_at
+                    FROM announcements a
+                    INNER JOIN users u ON u.id = a.author_id';
+            $params = [];
 
-            return $stmt ? ($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []) : [];
+            if ($statusFilter !== null) {
+                $sql .= ' WHERE a.status = :status';
+                $params['status'] = $statusFilter;
+            }
+
+            $sql .= ' ' . $orderBy;
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($params);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+
+            return array_values($rows);
         }
 
         $stmt = $this->pdo->query(
             'SELECT a.*,
-                    CONCAT(u.first_name, \' \', u.last_name) AS author_name
+                    CONCAT(u.first_name, \' \', u.last_name) AS author_name,
+                    COALESCE(a.publish_at, a.updated_at, a.created_at) AS sort_at
              FROM announcements a
              INNER JOIN users u ON u.id = a.author_id
              WHERE a.status = \'published\'
                AND (a.expire_at IS NULL OR a.expire_at >= NOW())
                AND (a.publish_at IS NULL OR a.publish_at <= NOW())
-             ORDER BY a.publish_at DESC, a.id DESC'
+             ' . $orderBy
         );
 
         $rows = $stmt ? ($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []) : [];
@@ -395,7 +416,7 @@ final class AnnouncementService
              WHERE status = 'published'
                AND (expire_at IS NULL OR expire_at >= NOW())
                AND (publish_at IS NULL OR publish_at <= NOW())
-             ORDER BY publish_at DESC, id DESC
+             ORDER BY COALESCE(publish_at, updated_at, created_at) DESC, id DESC
              LIMIT {$limit}"
         );
 

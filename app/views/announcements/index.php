@@ -4,8 +4,13 @@
 /** @var bool $canCreate */
 /** @var bool $canPublish */
 /** @var bool $canDelete */
+/** @var string|null $statusFilter */
 
 $canDelete = !empty($canDelete);
+$canManage = !empty($canManage);
+$statusFilter = isset($statusFilter) && is_string($statusFilter) && $statusFilter !== ''
+    ? $statusFilter
+    : null;
 
 $priorityBadge = static function (string $p): string {
     return match ($p) {
@@ -38,11 +43,25 @@ $priorityLabel = static function (string $p): string {
         default => 'Media',
     };
 };
+
+$formatDate = static function (array $row): string {
+    $raw = (string) ($row['sort_at'] ?? $row['publish_at'] ?? $row['updated_at'] ?? $row['created_at'] ?? '');
+    if ($raw === '') {
+        return 'Sin fecha';
+    }
+    $ts = strtotime($raw);
+
+    return $ts === false ? $raw : date('d/m/Y H:i', $ts);
+};
 ?>
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <div>
         <h1 class="h3 mb-1">Avisos institucionales</h1>
-        <p class="text-muted mb-0">Publicaciones del vicerrectorado y administración.</p>
+        <p class="text-muted mb-0">
+            <?= $canManage
+                ? 'Gestione y consulte todos los avisos. Los más recientes aparecen primero.'
+                : 'Avisos vigentes dirigidos a usted. El más reciente aparece primero.' ?>
+        </p>
     </div>
     <?php if (!empty($canCreate)): ?>
         <a href="<?= e(url('/announcements/create')) ?>" class="btn btn-primary">
@@ -51,87 +70,102 @@ $priorityLabel = static function (string $p): string {
     <?php endif; ?>
 </div>
 
+<?php if ($canManage): ?>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+        <?php
+        $filters = [
+            '' => 'Todos',
+            'published' => 'Publicados',
+            'draft' => 'Borradores',
+            'archived' => 'Archivados',
+        ];
+        foreach ($filters as $value => $label):
+            $active = ($statusFilter === null && $value === '') || $statusFilter === $value;
+            $href = $value === '' ? url('/announcements') : url('/announcements?status=' . urlencode($value));
+            ?>
+            <a href="<?= e($href) ?>"
+               class="btn btn-sm <?= $active ? 'btn-primary' : 'btn-outline-primary' ?>">
+                <?= e($label) ?>
+            </a>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+<div class="mb-3 small text-muted">
+    <?= count($announcements) ?> aviso<?= count($announcements) === 1 ? '' : 's' ?>
+    · orden: más reciente arriba
+</div>
+
 <?php if ($announcements === []): ?>
     <div class="card-soft p-4 text-center text-muted">No hay avisos para mostrar.</div>
-<?php elseif (!empty($canManage)): ?>
-    <div class="card-soft p-0 overflow-hidden">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0 align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>Título</th>
-                        <th>Estado</th>
-                        <th>Prioridad</th>
-                        <th>Audiencia</th>
-                        <th>Fecha</th>
-                        <th class="text-end">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($announcements as $row): ?>
-                    <?php $titleSafe = (string) $row['title']; ?>
-                    <tr>
-                        <td>
-                            <a href="<?= e(url('/announcements/' . $row['id'])) ?>" class="fw-semibold text-decoration-none">
-                                <?= e($titleSafe) ?>
-                            </a>
-                            <?php if (!empty($row['category'])): ?>
-                                <div class="small text-muted"><?= e((string) $row['category']) ?></div>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <span class="badge text-bg-<?= e($statusBadge((string) $row['status'])) ?>">
-                                <?= e($statusLabel((string) $row['status'])) ?>
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge text-bg-<?= e($priorityBadge((string) $row['priority'])) ?>">
-                                <?= e($priorityLabel((string) $row['priority'])) ?>
-                            </span>
-                        </td>
-                        <td class="small"><?= e((string) ($row['audience'] ?: 'ALL')) ?></td>
-                        <td class="small text-muted">
-                            <?= e((string) ($row['publish_at'] ?? $row['created_at'] ?? '')) ?>
-                        </td>
-                        <td class="text-end text-nowrap">
-                            <a class="btn btn-sm btn-outline-primary" href="<?= e(url('/announcements/' . $row['id'])) ?>">Ver</a>
-                            <?php if (auth_can('announcements.edit')): ?>
-                                <a class="btn btn-sm btn-outline-secondary" href="<?= e(url('/announcements/' . $row['id'] . '/edit')) ?>">Editar</a>
-                            <?php endif; ?>
-                            <?php if ($canDelete): ?>
-                                <form method="post" action="<?= e(url('/announcements/' . $row['id'] . '/delete')) ?>" class="d-inline"
-                                      onsubmit="return confirm('¿Eliminar el aviso «<?= e(addslashes($titleSafe)) ?>»?\n\nEsta acción no se puede deshacer. Se borrarán también adjuntos y notificaciones asociadas.');">
-                                    <?= csrf_field() ?>
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar aviso">
-                                        <i class="bi bi-trash me-1"></i>Eliminar
-                                    </button>
-                                </form>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
 <?php else: ?>
-    <div class="row g-3">
+    <div class="announcements-feed d-flex flex-column gap-3">
         <?php foreach ($announcements as $row): ?>
-            <div class="col-md-6">
-                <div class="card-soft p-3 h-100">
-                    <div class="d-flex justify-content-between gap-2 mb-2">
-                        <h2 class="h6 mb-0"><?= e((string) $row['title']) ?></h2>
-                        <span class="badge text-bg-<?= e($priorityBadge((string) $row['priority'])) ?>">
-                            <?= e($priorityLabel((string) $row['priority'])) ?>
+            <?php
+            $titleSafe = (string) ($row['title'] ?? '');
+            $status = (string) ($row['status'] ?? 'draft');
+            $prio = (string) ($row['priority'] ?? 'medium');
+            $desc = trim((string) ($row['description'] ?? ''));
+            if ($desc === '') {
+                $desc = mb_substr(trim((string) ($row['content'] ?? '')), 0, 160);
+            }
+            ?>
+            <article class="card-soft announcement-feed-item p-3 p-md-4">
+                <div class="d-flex flex-wrap justify-content-between gap-2 mb-2">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <span class="badge text-bg-<?= e($statusBadge($status)) ?>"><?= e($statusLabel($status)) ?></span>
+                        <span class="badge text-bg-<?= e($priorityBadge($prio)) ?>"><?= e($priorityLabel($prio)) ?></span>
+                        <?php if (!empty($row['category'])): ?>
+                            <span class="badge text-bg-light text-dark border"><?= e((string) $row['category']) ?></span>
+                        <?php endif; ?>
+                        <span class="badge text-bg-light text-dark border">
+                            <?= e((string) (($row['audience'] ?? '') !== '' ? $row['audience'] : 'ALL')) ?>
                         </span>
                     </div>
-                    <p class="small text-muted mb-2"><?= e((string) ($row['description'] ?? '')) ?></p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="small text-muted"><?= e((string) ($row['publish_at'] ?? '')) ?></span>
-                        <a href="<?= e(url('/announcements/' . $row['id'])) ?>" class="btn btn-sm btn-outline-primary">Ver</a>
+                    <time class="small text-muted" datetime="<?= e((string) ($row['sort_at'] ?? $row['publish_at'] ?? $row['created_at'] ?? '')) ?>">
+                        <i class="bi bi-clock me-1" aria-hidden="true"></i><?= e($formatDate($row)) ?>
+                    </time>
+                </div>
+
+                <h2 class="h5 mb-2">
+                    <a href="<?= e(url('/announcements/' . $row['id'])) ?>" class="text-decoration-none text-reset">
+                        <?= e($titleSafe) ?>
+                    </a>
+                </h2>
+
+                <?php if ($desc !== ''): ?>
+                    <p class="mb-3 text-muted"><?= e($desc) ?><?= mb_strlen($desc) >= 160 ? '…' : '' ?></p>
+                <?php endif; ?>
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <span class="small text-muted">
+                        <?php if (!empty($row['author_name'])): ?>
+                            Por <?= e((string) $row['author_name']) ?>
+                        <?php endif; ?>
+                    </span>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a class="btn btn-sm btn-outline-primary" href="<?= e(url('/announcements/' . $row['id'])) ?>">Ver</a>
+                        <?php if ($canManage && auth_can('announcements.edit')): ?>
+                            <a class="btn btn-sm btn-outline-secondary" href="<?= e(url('/announcements/' . $row['id'] . '/edit')) ?>">Editar</a>
+                        <?php endif; ?>
+                        <?php if ($canManage && !empty($canPublish) && $status !== 'published'): ?>
+                            <form method="post" action="<?= e(url('/announcements/' . $row['id'] . '/publish')) ?>" class="d-inline">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="btn btn-sm btn-success">Publicar</button>
+                            </form>
+                        <?php endif; ?>
+                        <?php if ($canManage && $canDelete): ?>
+                            <form method="post" action="<?= e(url('/announcements/' . $row['id'] . '/delete')) ?>" class="d-inline"
+                                  onsubmit="return confirm('¿Eliminar el aviso «<?= e(addslashes($titleSafe)) ?>»?\n\nEsta acción no se puede deshacer.');">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar aviso">
+                                    <i class="bi bi-trash" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        <?php endif; ?>
                     </div>
                 </div>
-            </div>
+            </article>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>

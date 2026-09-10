@@ -144,18 +144,27 @@ final class Router
             $path = '/';
         }
 
-        $scriptName = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
-        $bases = array_unique(array_filter([
-            $scriptName,
-            '/PortalInfor/app/public',
-            '/portalinfor/app/public',
-        ]));
+        $path = str_replace('\\', '/', $path);
 
-        foreach ($bases as $base) {
-            $base = rtrim(str_replace('\\', '/', (string) $base), '/');
+        // Solo la base real del despliegue (SCRIPT_NAME / APP_URL auto). Sin carpetas hardcodeadas.
+        $bases = [];
+        $scriptDir = str_replace('\\', '/', dirname((string) ($_SERVER['SCRIPT_NAME'] ?? '')));
+        if ($scriptDir !== '/' && $scriptDir !== '\\' && $scriptDir !== '.' && $scriptDir !== '') {
+            $bases[] = rtrim($scriptDir, '/');
+        }
 
-            if ($base !== '' && str_starts_with($path, $base)) {
+        $detected = app_base_path();
+        if ($detected !== '') {
+            $bases[] = $detected;
+        }
+
+        foreach (array_unique($bases) as $base) {
+            if ($base !== '' && str_starts_with($path, $base . '/')) {
                 $path = substr($path, strlen($base)) ?: '/';
+                break;
+            }
+            if ($base !== '' && $path === $base) {
+                $path = '/';
                 break;
             }
         }

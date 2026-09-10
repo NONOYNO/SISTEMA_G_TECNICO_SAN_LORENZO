@@ -117,7 +117,7 @@ Utiliza exclusivamente o prioritariamente:
 La raíz del proyecto debe tener como mínimo:
 
 ```text
-unidad-educativa-san-lorenzo/
+SISTEMA_G_TECNICO_SAN_LORENZO/
 │
 ├── spec/
 │
@@ -1638,7 +1638,7 @@ C:\xampp\htdocs\
 Ejemplo:
 
 ```text
-C:\xampp\htdocs\unidad-educativa-san-lorenzo\
+C:\xampp\htdocs\SISTEMA_G_TECNICO_SAN_LORENZO\
 ```
 
 Debe documentarse:

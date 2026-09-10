@@ -1,6 +1,6 @@
 # SPEC 27 — Eliminar aviso (Avisos institucionales)
 
-**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (PortalInfor)  
+**Proyecto:** Unidad Educativa Fiscomisional San Lorenzo (SISTEMA_G_TECNICO_SAN_LORENZO)  
 **Metodología:** POLKDEV — SPEC → SKILL → CODE  
 **Estado de implementación:** COMPLETED  
 **SKILL requerida:** `skills/announcements/SKILL.md`  

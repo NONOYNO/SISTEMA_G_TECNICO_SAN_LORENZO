@@ -1,16 +1,12 @@
 RewriteEngine On
 
-# Si el archivo o directorio existe, servirlo
+# Front controller: no depende del nombre de carpeta del proyecto.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Reescribir todo hacia el front controller
 RewriteRule ^ index.php [L,QSA]
 
-# Bloquear listado de directorios
 Options -Indexes
 
-# Subidas grandes (>200 MB) y múltiples archivos — requiere mod_php en Apache
 <IfModule mod_php.c>
   php_value upload_max_filesize 512M
   php_value post_max_size 600M
