@@ -146,9 +146,14 @@ final class UserRepository
 
         $q = trim((string) ($filters['q'] ?? ''));
         if ($q !== '') {
-            $where[] = '(u.username LIKE :q OR u.email LIKE :q OR u.first_name LIKE :q OR u.last_name LIKE :q
-                        OR CONCAT(u.first_name, \' \', u.last_name) LIKE :q)';
-            $params['q'] = '%' . $q . '%';
+            $where[] = '(u.username LIKE :q_username OR u.email LIKE :q_email OR u.first_name LIKE :q_first_name OR u.last_name LIKE :q_last_name
+                        OR CONCAT(u.first_name, \' \', u.last_name) LIKE :q_full_name)';
+            $like = '%' . $q . '%';
+            $params['q_username'] = $like;
+            $params['q_email'] = $like;
+            $params['q_first_name'] = $like;
+            $params['q_last_name'] = $like;
+            $params['q_full_name'] = $like;
         }
 
         $status = trim((string) ($filters['status'] ?? ''));

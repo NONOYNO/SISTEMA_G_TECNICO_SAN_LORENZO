@@ -319,6 +319,43 @@
     );
   }
 
+  function bindVicerrectorFilters() {
+    const filterContainer = document.getElementById('vicerrector-filters');
+    if (!filterContainer) return;
+    const buttons = filterContainer.querySelectorAll('button[data-filter]');
+    const feed = document.getElementById('vicerrector-feed');
+    if (!feed) return;
+    const items = feed.querySelectorAll('.vicerrector-item');
+    const emptyFilter = feed.querySelector('.vicerrector-filtered-empty');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach((b) => {
+          b.classList.remove('active', 'btn-primary');
+          b.classList.add('btn-outline-secondary');
+        });
+        btn.classList.add('active', 'btn-primary');
+        btn.classList.remove('btn-outline-secondary');
+
+        const filter = btn.getAttribute('data-filter') || 'all';
+        let visibleCount = 0;
+        items.forEach((item) => {
+          const type = item.getAttribute('data-type');
+          if (filter === 'all' || type === filter) {
+            item.style.display = 'flex';
+            visibleCount++;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        if (emptyFilter) {
+          emptyFilter.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     bindMarkReadButtons();
     bindMultiAttachments();
@@ -326,6 +363,7 @@
     bindDashboardMotion();
     bindUserMenu();
     bindNotificationBadgePolling();
+    bindVicerrectorFilters();
   });
 
   window.PortalApp = {
@@ -334,6 +372,7 @@
     bindMarkReadButtons,
     bindMultiAttachments,
     bindMobileSidebar,
+    bindVicerrectorFilters,
     updateUnreadBadges,
   };
 })();

@@ -636,19 +636,25 @@ body.sidebar-open {
 
 .dash-grid {
   display: grid;
-  grid-template-columns: minmax(240px, 1.05fr) minmax(280px, 1.45fr) minmax(220px, 0.95fr);
+  grid-template-columns: minmax(320px, 1.25fr) minmax(300px, 1.35fr) minmax(220px, 0.95fr);
   grid-template-areas:
-    "users avisos notif"
-    "extra avisos audit";
+    "vicerrector avisos notif"
+    "vicerrector avisos audit"
+    "extra extra extra";
   gap: 1.1rem;
   align-items: stretch;
 }
 
-.widget-users { grid-area: users; }
+.widget-vicerrector { grid-area: vicerrector; }
 .widget-avisos { grid-area: avisos; }
 .widget-notif { grid-area: notif; }
 .widget-audit { grid-area: audit; }
-.widget-extra { grid-area: extra; }
+.widget-extra {
+  grid-area: extra;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
 
 .widget {
   border-radius: 12px;
@@ -718,6 +724,144 @@ body.sidebar-open {
   opacity: 0.45;
   border-radius: 4px 4px 0 0;
   box-shadow: none;
+}
+
+.widget-vicerrector {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1.5px solid #b3c1d1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-badge-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 10px;
+  background: rgba(26, 86, 176, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.vicerrector-toolbar {
+  border: 1px solid #e2e8f0;
+}
+
+.vicerrector-feed {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 440px;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.35rem;
+}
+
+.vicerrector-feed::-webkit-scrollbar {
+  width: 5px;
+}
+.vicerrector-feed::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.vicerrector-feed::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vicerrector-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.8rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.vicerrector-item:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.vicerrector-item-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.vicerrector-item-icon.file-word { background: #e0edff; color: #1d4ed8; }
+.vicerrector-item-icon.file-excel { background: #dcfce7; color: #15803d; }
+.vicerrector-item-icon.file-pdf { background: #fee2e2; color: #b91c1c; }
+.vicerrector-item-icon.file-ppt { background: #ffedd5; color: #c2410c; }
+.vicerrector-item-icon.file-zip { background: #f1f5f9; color: #475569; }
+.vicerrector-item-icon.file-img { background: #f3e8ff; color: #7e22ce; }
+.vicerrector-item-icon.file-other { background: #f1f5f9; color: #64748b; }
+
+.vicerrector-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.vicerrector-item-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.vicerrector-item-title {
+  color: var(--pi-text);
+  font-size: 0.88rem;
+  display: block;
+}
+
+.vicerrector-item-title:hover {
+  color: var(--brand-primary);
+}
+
+.vicerrector-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.76rem;
+  margin-top: 3px;
+}
+
+.vicerrector-item-meta .bullet {
+  color: #94a3b8;
+}
+
+.vicerrector-item-meta .meta-link {
+  color: #64748b;
+  max-width: 180px;
+}
+
+.vicerrector-item-meta .meta-link:hover {
+  color: var(--brand-primary) !important;
+  text-decoration: underline !important;
+}
+
+.vicerrector-item-action .btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
 }
 
 .widget-glass {
@@ -923,9 +1067,10 @@ body.sidebar-open {
   .dash-grid {
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
-      "users notif"
+      "vicerrector notif"
+      "vicerrector audit"
       "avisos avisos"
-      "audit extra";
+      "extra extra";
   }
 }
 
@@ -933,7 +1078,7 @@ body.sidebar-open {
   .dash-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "users"
+      "vicerrector"
       "avisos"
       "notif"
       "audit"

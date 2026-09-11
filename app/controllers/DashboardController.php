@@ -92,9 +92,16 @@ final class DashboardController extends Controller
                     ],
                 ];
             }
+
+            $metrics['vicerrector_activities'] = $this->getVicerrectorActivities($pdo);
         } catch (Throwable) {
             $metrics['cards'] = [
                 ['label' => 'Estado', 'value' => '—', 'icon' => 'bi-exclamation-triangle', 'hint' => 'No se pudieron cargar métricas'],
+            ];
+            $metrics['vicerrector_activities'] = [
+                'items' => [],
+                'total_files' => 0,
+                'total_announcements' => 0,
             ];
         }
 
@@ -103,6 +110,111 @@ final class DashboardController extends Controller
             'user' => $user,
             'metrics' => $metrics,
         ]);
+    }
+
+    /**
+     * Obtiene las actividades recientes del Vicerrectorado (archivos adjuntos y comunicados emitidos).
+     *
+     * @return array{
+     *   items: list<array<string, mixed>>,
+     *   total_files: int,
+     *   total_announcements: int
+     * }
+     */
+    private function getVicerrectorActivities(PDO $pdo): array
+    {
+        $activities = [];
+        $canManage = auth_can('announcements.create') || auth_can('announcements.edit');
+
+        // 1. Archivos adjuntos y documentos institucionales
+        try {
+            $sqlFiles = "
+                SELECT a.id, a.original_name, a.stored_name, a.mime_type, a.extension, a.size_bytes, a.created_at,
+                       a.attachable_type, a.attachable_id,
+                       COALESCE(NULLIF(TRIM(CONCAT(COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, ''))), ''), u.username, 'Vicerrectorado') AS author_name,
+                       ann.title AS announcement_title,
+                       ann.status AS announcement_status
+                FROM attachments a
+                LEFT JOIN users u ON u.id = a.uploaded_by
+                LEFT JOIN announcements ann ON (a.attachable_type = 'announcement' AND ann.id = a.attachable_id)
+                " . ($canManage ? "" : "WHERE ann.id IS NULL OR ann.status = 'published'") . "
+                ORDER BY a.created_at DESC
+                LIMIT 15
+            ";
+            $stmt = $pdo->query($sqlFiles);
+            $files = $stmt ? ($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []) : [];
+            foreach ($files as $f) {
+                $activities[] = [
+                    'id' => (int) $f['id'],
+                    'type' => 'file',
+                    'title' => (string) $f['original_name'],
+                    'detail' => !empty($f['announcement_title']) ? (string) $f['announcement_title'] : 'Documento institucional',
+                    'extension' => strtolower((string) ($f['extension'] ?? '')),
+                    'size_bytes' => (int) ($f['size_bytes'] ?? 0),
+                    'date' => (string) ($f['created_at'] ?? ''),
+                    'author' => (string) ($f['author_name'] ?? 'Vicerrectorado'),
+                    'attachable_id' => (int) ($f['attachable_id'] ?? 0),
+                    'download_url' => url('/files/' . $f['id'] . '/download'),
+                    'view_url' => !empty($f['attachable_id']) ? url('/announcements/' . $f['attachable_id']) : null,
+                ];
+            }
+        } catch (Throwable) {
+        }
+
+        // 2. Avisos y comunicados oficiales del Vicerrectorado
+        try {
+            $sqlAnn = "
+                SELECT ann.id, ann.title, ann.description, ann.category, ann.priority, ann.status,
+                       ann.publish_at, ann.created_at,
+                       COALESCE(NULLIF(TRIM(CONCAT(COALESCE(u.first_name, ''), ' ', COALESCE(u.last_name, ''))), ''), u.username, 'Vicerrectorado') AS author_name,
+                       (SELECT COUNT(*) FROM attachments at WHERE at.attachable_type = 'announcement' AND at.attachable_id = ann.id) AS files_count
+                FROM announcements ann
+                LEFT JOIN users u ON u.id = ann.author_id
+                " . ($canManage ? "" : "WHERE ann.status = 'published'") . "
+                ORDER BY COALESCE(ann.publish_at, ann.created_at) DESC
+                LIMIT 10
+            ";
+            $stmt = $pdo->query($sqlAnn);
+            $announcements = $stmt ? ($stmt->fetchAll(PDO::FETCH_ASSOC) ?: []) : [];
+            foreach ($announcements as $a) {
+                $activities[] = [
+                    'id' => (int) $a['id'],
+                    'type' => 'announcement',
+                    'title' => (string) $a['title'],
+                    'detail' => !empty($a['description']) ? (string) $a['description'] : ((string) ($a['category'] ?? 'Comunicado institucional')),
+                    'extension' => '',
+                    'size_bytes' => 0,
+                    'date' => (string) ($a['publish_at'] ?? $a['created_at'] ?? ''),
+                    'author' => (string) ($a['author_name'] ?? 'Vicerrectorado'),
+                    'attachable_id' => (int) $a['id'],
+                    'download_url' => null,
+                    'view_url' => url('/announcements/' . $a['id']),
+                    'files_count' => (int) ($a['files_count'] ?? 0),
+                    'priority' => (string) ($a['priority'] ?? 'medium'),
+                    'category' => (string) ($a['category'] ?? 'Académico'),
+                ];
+            }
+        } catch (Throwable) {
+        }
+
+        // Ordenar unificado por fecha DESC
+        usort($activities, static function (array $x, array $y): int {
+            return strcmp((string) ($y['date'] ?? ''), (string) ($x['date'] ?? ''));
+        });
+
+        $totalFiles = 0;
+        $totalAnnouncements = 0;
+        try {
+            $totalFiles = (int) $pdo->query("SELECT COUNT(*) FROM attachments")->fetchColumn();
+            $totalAnnouncements = (int) $pdo->query("SELECT COUNT(*) FROM announcements WHERE status = 'published'")->fetchColumn();
+        } catch (Throwable) {
+        }
+
+        return [
+            'items' => array_slice($activities, 0, 15),
+            'total_files' => $totalFiles,
+            'total_announcements' => $totalAnnouncements,
+        ];
     }
 
     /**

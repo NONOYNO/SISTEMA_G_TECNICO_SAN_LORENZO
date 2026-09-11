@@ -61,5 +61,9 @@ assert_true(in_array('php', $forbidden, true), 'Blacklist incluye php');
 $admin = $users->findByLogin('admin');
 assert_true($admin !== null && ($admin['status'] ?? '') === 'active', 'Usuario admin activo en BD');
 
+// User pagination & search filter
+$filteredUsers = $users->paginate(['q' => 'admin', 'status' => 'active']);
+assert_true(is_array($filteredUsers) && ($filteredUsers['total'] ?? 0) >= 1, 'UserRepository::paginate con filtro de búsqueda ejecuta correctamente');
+
 echo "\nResultado: {$passed} passed, {$failed} failed\n";
 exit($failed > 0 ? 1 : 0);
