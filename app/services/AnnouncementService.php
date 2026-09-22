@@ -327,8 +327,10 @@ final class AnnouncementService
             $this->pdo->commit();
 
             $this->audit->log(auth_id(), 'announcements.publish', 'announcement', $id, [
+                'title' => $announcement['title'],
                 'status' => $announcement['status'],
             ], [
+                'title' => $announcement['title'],
                 'status' => 'published',
                 'notifications_created' => $created,
             ]);
@@ -364,8 +366,10 @@ final class AnnouncementService
         }
 
         $this->audit->log(auth_id(), 'announcements.archive', 'announcement', $id, [
+            'title' => $announcement['title'],
             'status' => $announcement['status'],
         ], [
+            'title' => $announcement['title'],
             'status' => 'archived',
         ]);
 
