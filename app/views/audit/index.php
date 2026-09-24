@@ -595,141 +595,186 @@ $hasActiveFilters = ($filters['q'] !== '')
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const detailButtons = document.querySelectorAll('.btn-audit-detail');
+(function () {
+    const modalEl = document.getElementById('auditDetailModal');
 
-    detailButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            const rawData = this.getAttribute('data-audit');
-            if (!rawData) return;
+    function ensureModalInBody() {
+        if (modalEl && modalEl.parentElement !== document.body) {
+            document.body.appendChild(modalEl);
+        }
+    }
 
-            try {
-                const data = JSON.parse(rawData);
+    // Trasladar de inmediato y al cargar el DOM al <body> para no quedar atrapado
+    // dentro del stacking context de .app-content o detrás del backdrop oscuro.
+    ensureModalInBody();
 
-                document.getElementById('modalAuditId').textContent = 'ID del evento #' + (data.id || '—');
-                document.getElementById('modalDate').textContent = data.date || '—';
+    document.addEventListener('DOMContentLoaded', function () {
+        ensureModalInBody();
 
-                // Resultado
-                const resBadge = document.getElementById('modalResultBadge');
-                resBadge.className = 'badge text-bg-' + (data.result_badge || 'success') + ' px-2 py-1';
-                resBadge.innerHTML = (data.result_status === 'fail' ? '<i class="bi bi-x-circle me-1"></i>' : '<i class="bi bi-check-circle me-1"></i>') + (data.result_label || 'Exitoso');
+        // Enlace resiliente de botones de cierre
+        if (modalEl) {
+            const dismissBtns = modalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            dismissBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                        const modalInstance = bootstrap.Modal.getInstance(modalEl) || bootstrap.Modal.getOrCreateInstance(modalEl);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                    }
+                });
+            });
 
-                // Usuario
-                document.getElementById('modalUser').textContent = data.user_name || '—';
-                const userSub = document.getElementById('modalUserSub');
-                if (data.username && data.username !== data.user_name) {
-                    userSub.textContent = '@' + data.username;
-                } else {
-                    userSub.textContent = '';
+            // Cerrar al hacer clic en el fondo exterior del diálogo
+            modalEl.addEventListener('click', function (e) {
+                if (e.target === modalEl) {
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                        const modalInstance = bootstrap.Modal.getInstance(modalEl) || bootstrap.Modal.getOrCreateInstance(modalEl);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                    }
                 }
+            });
+        }
 
-                // Roles
-                const rolesContainer = document.getElementById('modalRoles');
-                rolesContainer.innerHTML = '';
-                if (data.user_roles) {
-                    const roles = data.user_roles.split(',');
-                    roles.forEach(function (r) {
+        const detailButtons = document.querySelectorAll('.btn-audit-detail');
+
+        detailButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                ensureModalInBody();
+
+                const rawData = this.getAttribute('data-audit');
+                if (!rawData) return;
+
+                try {
+                    const data = JSON.parse(rawData);
+
+                    document.getElementById('modalAuditId').textContent = 'ID del evento #' + (data.id || '—');
+                    document.getElementById('modalDate').textContent = data.date || '—';
+
+                    // Resultado
+                    const resBadge = document.getElementById('modalResultBadge');
+                    resBadge.className = 'badge text-bg-' + (data.result_badge || 'success') + ' px-2 py-1';
+                    resBadge.innerHTML = (data.result_status === 'fail' ? '<i class="bi bi-x-circle me-1"></i>' : '<i class="bi bi-check-circle me-1"></i>') + (data.result_label || 'Exitoso');
+
+                    // Usuario
+                    document.getElementById('modalUser').textContent = data.user_name || '—';
+                    const userSub = document.getElementById('modalUserSub');
+                    if (data.username && data.username !== data.user_name) {
+                        userSub.textContent = '@' + data.username;
+                    } else {
+                        userSub.textContent = '';
+                    }
+
+                    // Roles
+                    const rolesContainer = document.getElementById('modalRoles');
+                    rolesContainer.innerHTML = '';
+                    if (data.user_roles) {
+                        const roles = data.user_roles.split(',');
+                        roles.forEach(function (r) {
+                            const span = document.createElement('span');
+                            span.className = 'badge bg-primary-subtle text-primary border border-primary-subtle me-1';
+                            span.textContent = r.trim();
+                            rolesContainer.appendChild(span);
+                        });
+                    } else {
                         const span = document.createElement('span');
-                        span.className = 'badge bg-primary-subtle text-primary border border-primary-subtle me-1';
-                        span.textContent = r.trim();
+                        span.className = 'badge bg-light text-secondary border';
+                        span.textContent = 'Sin rol asignado / Sistema';
                         rolesContainer.appendChild(span);
-                    });
-                } else {
-                    const span = document.createElement('span');
-                    span.className = 'badge bg-light text-secondary border';
-                    span.textContent = 'Sin rol asignado / Sistema';
-                    rolesContainer.appendChild(span);
+                    }
+
+                    // Acción
+                    const actBadge = document.getElementById('modalActionBadge');
+                    actBadge.className = 'badge text-bg-' + (data.action_badge || 'secondary');
+                    actBadge.textContent = data.action_label || data.action_code || '—';
+                    document.getElementById('modalActionCode').textContent = data.action_code || '';
+
+                    // Entidad
+                    document.getElementById('modalEntity').textContent = data.entity_display || '—';
+
+                    // IP & User Agent
+                    document.getElementById('modalIp').textContent = data.ip || '—';
+                    const uaElem = document.getElementById('modalUserAgent');
+                    uaElem.textContent = data.user_agent || '—';
+                    uaElem.title = data.user_agent || '';
+
+                    // Summary
+                    document.getElementById('modalSummary').textContent = data.summary || 'Operación registrada en la auditoría.';
+
+                    // Comparativa de valores (old vs new)
+                    const valuesContainer = document.getElementById('modalValuesContainer');
+                    const tableBody = document.getElementById('modalValuesTableBody');
+                    tableBody.innerHTML = '';
+
+                    const oldVals = data.old_values || {};
+                    const newVals = data.new_values || {};
+                    const allKeys = Array.from(new Set([...Object.keys(oldVals), ...Object.keys(newVals)]));
+
+                    if (allKeys.length > 0) {
+                        valuesContainer.style.display = 'block';
+                        allKeys.forEach(function (key) {
+                            const tr = document.createElement('tr');
+
+                            const tdKey = document.createElement('td');
+                            tdKey.className = 'fw-semibold small text-muted font-monospace';
+                            tdKey.textContent = key;
+
+                            const tdOld = document.createElement('td');
+                            tdOld.className = 'small';
+                            const oldVal = oldVals[key];
+                            if (oldVal === undefined || oldVal === null) {
+                                tdOld.innerHTML = '<span class="text-muted font-italic">—</span>';
+                            } else if (typeof oldVal === 'object') {
+                                tdOld.textContent = JSON.stringify(oldVal);
+                            } else {
+                                tdOld.textContent = String(oldVal);
+                            }
+
+                            const tdNew = document.createElement('td');
+                            tdNew.className = 'small fw-semibold';
+                            const newVal = newVals[key];
+                            if (newVal === undefined || newVal === null) {
+                                tdNew.innerHTML = '<span class="text-muted font-italic">—</span>';
+                            } else if (typeof newVal === 'object') {
+                                tdNew.textContent = JSON.stringify(newVal);
+                            } else {
+                                tdNew.textContent = String(newVal);
+                            }
+
+                            tr.appendChild(tdKey);
+                            tr.appendChild(tdOld);
+                            tr.appendChild(tdNew);
+                            tableBody.appendChild(tr);
+                        });
+                    } else {
+                        valuesContainer.style.display = 'none';
+                    }
+
+                    // JSON técnico completo
+                    const cleanData = {
+                        id: data.id,
+                        created_at: data.date,
+                        user_id: data.user_id,
+                        username: data.username,
+                        user_name: data.user_name,
+                        user_roles: data.user_roles,
+                        action: data.action_code,
+                        entity: data.entity_type,
+                        entity_id: data.entity_id,
+                        ip: data.ip,
+                        user_agent: data.user_agent,
+                        old_values: data.old_values,
+                        new_values: data.new_values
+                    };
+                    document.getElementById('modalRawJson').textContent = JSON.stringify(cleanData, null, 2);
+
+                } catch (err) {
+                    console.error('Error al parsear datos de auditoría:', err);
                 }
-
-                // Acción
-                const actBadge = document.getElementById('modalActionBadge');
-                actBadge.className = 'badge text-bg-' + (data.action_badge || 'secondary');
-                actBadge.textContent = data.action_label || data.action_code || '—';
-                document.getElementById('modalActionCode').textContent = data.action_code || '';
-
-                // Entidad
-                document.getElementById('modalEntity').textContent = data.entity_display || '—';
-
-                // IP & User Agent
-                document.getElementById('modalIp').textContent = data.ip || '—';
-                const uaElem = document.getElementById('modalUserAgent');
-                uaElem.textContent = data.user_agent || '—';
-                uaElem.title = data.user_agent || '';
-
-                // Summary
-                document.getElementById('modalSummary').textContent = data.summary || 'Operación registrada en la auditoría.';
-
-                // Comparativa de valores (old vs new)
-                const valuesContainer = document.getElementById('modalValuesContainer');
-                const tableBody = document.getElementById('modalValuesTableBody');
-                tableBody.innerHTML = '';
-
-                const oldVals = data.old_values || {};
-                const newVals = data.new_values || {};
-                const allKeys = Array.from(new Set([...Object.keys(oldVals), ...Object.keys(newVals)]));
-
-                if (allKeys.length > 0) {
-                    valuesContainer.style.display = 'block';
-                    allKeys.forEach(function (key) {
-                        const tr = document.createElement('tr');
-
-                        const tdKey = document.createElement('td');
-                        tdKey.className = 'fw-semibold small text-muted font-monospace';
-                        tdKey.textContent = key;
-
-                        const tdOld = document.createElement('td');
-                        tdOld.className = 'small';
-                        const oldVal = oldVals[key];
-                        if (oldVal === undefined || oldVal === null) {
-                            tdOld.innerHTML = '<span class="text-muted font-italic">—</span>';
-                        } else if (typeof oldVal === 'object') {
-                            tdOld.textContent = JSON.stringify(oldVal);
-                        } else {
-                            tdOld.textContent = String(oldVal);
-                        }
-
-                        const tdNew = document.createElement('td');
-                        tdNew.className = 'small fw-semibold';
-                        const newVal = newVals[key];
-                        if (newVal === undefined || newVal === null) {
-                            tdNew.innerHTML = '<span class="text-muted font-italic">—</span>';
-                        } else if (typeof newVal === 'object') {
-                            tdNew.textContent = JSON.stringify(newVal);
-                        } else {
-                            tdNew.textContent = String(newVal);
-                        }
-
-                        tr.appendChild(tdKey);
-                        tr.appendChild(tdOld);
-                        tr.appendChild(tdNew);
-                        tableBody.appendChild(tr);
-                    });
-                } else {
-                    valuesContainer.style.display = 'none';
-                }
-
-                // JSON técnico completo
-                const cleanData = {
-                    id: data.id,
-                    created_at: data.date,
-                    user_id: data.user_id,
-                    username: data.username,
-                    user_name: data.user_name,
-                    user_roles: data.user_roles,
-                    action: data.action_code,
-                    entity: data.entity_type,
-                    entity_id: data.entity_id,
-                    ip: data.ip,
-                    user_agent: data.user_agent,
-                    old_values: data.old_values,
-                    new_values: data.new_values
-                };
-                document.getElementById('modalRawJson').textContent = JSON.stringify(cleanData, null, 2);
-
-            } catch (err) {
-                console.error('Error al parsear datos de auditoría:', err);
-            }
+            });
         });
     });
-});
+})();
 </script>

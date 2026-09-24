@@ -356,7 +356,18 @@
     });
   }
 
+  function bindModalsPlacement() {
+    // Traslada modales que estén dentro de .app-content o contenedores anidados
+    // directamente al <body> para evitar que queden atrapados detrás del .modal-backdrop
+    document.querySelectorAll('.app-content .modal').forEach((modal) => {
+      if (modal.parentElement && modal.parentElement !== document.body) {
+        document.body.appendChild(modal);
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+    bindModalsPlacement();
     bindMarkReadButtons();
     bindMultiAttachments();
     bindMobileSidebar();
@@ -369,6 +380,7 @@
   window.PortalApp = {
     csrfToken,
     apiFetch,
+    bindModalsPlacement,
     bindMarkReadButtons,
     bindMultiAttachments,
     bindMobileSidebar,

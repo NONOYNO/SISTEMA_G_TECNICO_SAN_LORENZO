@@ -211,7 +211,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .app-navbar {
   position: relative;
-  z-index: 1060;
+  z-index: 1030;
   overflow: visible;
   background: #ffffff !important;
   border-bottom: 1.5px solid #b3c1d1;
@@ -229,7 +229,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .app-content {
   position: relative;
-  z-index: 1;
   padding: 1.35rem 1.5rem 2rem;
   background: #f4f6f8;
 }
@@ -373,6 +372,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-close {
   filter: none;
+}
+
+.modal {
+  z-index: 1055;
+}
+
+.modal-backdrop {
+  z-index: 1050;
 }
 
 .modal-content {
